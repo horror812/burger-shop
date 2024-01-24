@@ -9,14 +9,13 @@ interface BurgerIngredientsItemListProps {
   index: number;
   type?: string; 
   ingredients: TIngredientItem[];
-  refs: React.RefObject<HTMLParagraphElement[]>; 
 }
 
 const BurgerIngredientsItemList: FC<BurgerIngredientsItemListProps> = (props) => {
-  const { title, ingredients, refs, index } = props;
+  const { title, ingredients,  index } = props;
   return (
     <div className={styles.ingrList}>
-      <p id={index.toString()} ref={(item) => { refs.current![index] = item! }} className='text text_type_main-medium mb-6'>
+      <p id={index.toString()}  className='text text_type_main-medium mb-6'>
         {title}
       </p>
       <section className={styles.ingrContainer + " ml-4"}>

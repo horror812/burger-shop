@@ -13,14 +13,13 @@ const BurgerIngredientsItem: FC<BurgerIngredientsItemProps> = ({ item , count}) 
   const ref = useRef<HTMLDivElement | null>(null);
 // draggable
   return (   
-      <div key={item._id} className={styles.container + " mb-8"}   
-      ref={ref}>
+      <div /*key={item._id}*/ className={styles.container + " mb-8"} ref={ref}>
         {
           (count && count > 0) && (
             <span className={styles.count + " text_type_digits-default"}>{count}</span>
           ) 
         }  
-        <img src={item.image} alt=""/>
+        <img src={item.image} alt={item.name}/>
         <span className={styles.price + " mt-2 mb-1 text_type_digits-default"}>
           {item.price}
           <CurrencyIcon type="primary" />

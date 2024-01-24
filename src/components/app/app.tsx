@@ -17,8 +17,8 @@ const App:FC = () => {
     <>
       <AppHeader />  
       <main className={styles.main}>
-        <BurgerIngrediets ingredientes = {apiData} /> 
-        <BurgerConstructor ingredientes = {apiData} order = {apiOrder}/>
+        <BurgerIngrediets ingredients = {apiData} /> 
+        <BurgerConstructor ingredients = {apiData} order = {apiOrder}/>
       </main>
     </>); 
 }

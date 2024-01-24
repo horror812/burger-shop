@@ -1,31 +1,35 @@
 import {ReactElement, FC} from 'react';
 
 import styles from './link-button.module.css';
-import { Button } from '@ya.praktikum/react-developer-burger-ui-components';
-
-//# Использую Button потому что пока не разобрался с NavLink
 
 type LinkButtonProps = {
     icon: ReactElement,
     type: 'primary' | 'secondary', // string,    
     text: string
-    // link: string,
-    // onClick    
+    // link: string, or onClick    
 }
 
 const LinkButton: FC<LinkButtonProps> = (props) =>{    
-    return (<div className={styles.button}>
-        <Button htmlType='button' type={props.type} size="medium">
-            {props.icon}
+    return (
+    <div className={styles.button}>      
+        <a href="#" className = {styles.button}>
+        {props.icon}
             <span className={props.type === 'primary' ? styles.fontPrimary : styles.fontSecondary}>
                 {props.text}
             </span>
-        </Button>
-        </div>);
-   //     <NavLink to={props.link} className={style.button}>
-   //         {props.icon}
-   //         <p className={props.type === 'primary' ? styles.fontPrimary : styles.fontSecondary}>{props.text}</p>
-   //     </NavLink>
+        </a>
+    </div>);
+    // <Button htmlType='button' type={props.type} size="medium">
+    //  {props.icon}
+    //  <span className={props.type === 'primary' ? styles.fontPrimary : styles.fontSecondary}>
+    //      {props.text}
+    //  </span>
+    // </Button>
+
+   // <NavLink to={props.link} className={style.button}>
+   //      {props.icon}
+   //      <p className={props.type === 'primary' ? styles.fontPrimary : styles.fontSecondary}>{props.text}</p>
+   // </NavLink>
    
 }
 

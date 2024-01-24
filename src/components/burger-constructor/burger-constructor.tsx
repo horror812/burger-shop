@@ -5,7 +5,7 @@ import BurgerConstructorItem from './burger-constructor-item/burger-constructor-
 import { Button, ConstructorElement, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 
 type BurgerConstructorProps = {
-    ingredientes: TIngredientItem[]; // all_ingredientes   
+    ingredients: TIngredientItem[]; // all_ingredientes   
     order: TOrderItem; // bun and ingredients 
     //orderIngredients: TIngredientItem[];
     //orderBun?: TIngredientItem;   
@@ -14,7 +14,7 @@ type BurgerConstructorProps = {
 const BurgerConstructor: FC<BurgerConstructorProps> = (props) => {
    
     // order просто готовый бургер-заглушка сейчас
-    // const allIngredients = props.ingredientes
+    // const allIngredients = props.ingredients
     const order = props.order    
     const bun = order.bun
     const orderIngredients = order.ingredients
