@@ -11,13 +11,13 @@ type LinkButtonProps = {
 
 const LinkButton: FC<LinkButtonProps> = (props) =>{    
     return (
-    <div className={styles.button}>      
-        <a href="#" className = {styles.button}>
+    <div>      
+    <a href="#" className = {styles.button}>
         {props.icon}
             <span className={props.type === 'primary' ? styles.fontPrimary : styles.fontSecondary}>
                 {props.text}
             </span>
-        </a>
+    </a>
     </div>);
     // <Button htmlType='button' type={props.type} size="medium">
     //  {props.icon}

@@ -9,10 +9,13 @@ interface BurgerIngredientsItemListProps {
   index: number;
   type?: string; 
   ingredients: TIngredientItem[];
+  onItemClick?: (item:TIngredientItem)=>void;
 }
 
 const BurgerIngredientsItemList: FC<BurgerIngredientsItemListProps> = (props) => {
-  const { title, ingredients,  index } = props;
+  
+  const { title, ingredients,  index, onItemClick } = props;
+
   return (
     <div className={styles.ingrList}>
       <p id={index.toString()}  className='text text_type_main-medium mb-6'>
@@ -20,7 +23,7 @@ const BurgerIngredientsItemList: FC<BurgerIngredientsItemListProps> = (props) =>
       </p>
       <section className={styles.ingrContainer + " ml-4"}>
         {
-          ingredients.map((item) => <BurgerIngredientsItem key={item._id} item={item} />)
+          ingredients.map((item) => <BurgerIngredientsItem key={item._id} item={item} onItemClick = {onItemClick}/>)
         }
       </section>
     </div>

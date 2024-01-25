@@ -9,6 +9,7 @@ type BurgerConstructorProps = {
     order: TOrderItem; // bun and ingredients 
     //orderIngredients: TIngredientItem[];
     //orderBun?: TIngredientItem;   
+    onOrderClick: ()=>void
 }
 
 const BurgerConstructor: FC<BurgerConstructorProps> = (props) => {
@@ -19,7 +20,7 @@ const BurgerConstructor: FC<BurgerConstructorProps> = (props) => {
     const bun = order.bun
     const orderIngredients = order.ingredients
     const totalSum = 1000 // bun.price + ingredients[...].price
- 
+    const onOrderClick = props.onOrderClick
    
 return (<div className = {styles.main + " ml-5"} >    
         <div className={styles.container + " ml-4 mt-25"}>
@@ -66,9 +67,9 @@ return (<div className = {styles.main + " ml-5"} >
             type="primary" 
             size="large" 
             onClick={() => { 
-            //if(burgerBun && constructorIngredients.length > 2) {
-            // openModal();
-           // }
+            if(bun && orderIngredients && orderIngredients!.length >= 1) {
+                onOrderClick()
+            }
           }}
         >
           Оформить заказ

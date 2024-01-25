@@ -1,6 +1,6 @@
 .header {
     background: #1C1C21;
-    min-height: 88px;
+    min-height: 80px;
     display: flex;
     flex-direction: column;
     align-items: center;
