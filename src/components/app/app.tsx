@@ -15,16 +15,19 @@ import IngredientDetails from '../ingredient-details/ingredient-details';
 
 const App:FC = () => {
   
-  // api.get ??
+  // во втором спринте Добавить api для загрузки и проверку 
+  // api.get или что-то такое
   const apiData = appData 
   const apiOrder = appOrder
+
   
   // order-modal
   const [orderModalVisible, setOrderModalVisible] = useState(false);
   const handleCloseOrderModal = () => { setOrderModalVisible(false) }
   const handleOpenOrderModal = () => { setOrderModalVisible(true) }
 
-  // item-modal fix: наверное нужно использовать один useState({visible, item}) ?
+  // Q1: item-modal fix: наверное нужно использовать один useState({visible, item}) ?
+  
   const [ingrModalVisible, setIngrModalVisible] = useState(false);
   const [ingrModalItem, setIngrModalItem] = useState<TIngredientItem|null>(null);
   const handleCloseIngrModal = () => { setIngrModalVisible(false) }
@@ -32,7 +35,10 @@ const App:FC = () => {
     setIngrModalVisible(true) 
     setIngrModalItem(item)
   }
-  
+
+  // Q2: Может перенести модальные окна 
+  //    внутрь BurgerIngrediets и BurgerConstructor?
+
   return (
     <>
       <AppHeader />  
