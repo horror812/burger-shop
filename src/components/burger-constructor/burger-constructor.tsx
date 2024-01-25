@@ -40,7 +40,7 @@ return (<div className = {styles.main + " ml-5"} >
                 orderIngredients && orderIngredients.length >0 ? (
                     orderIngredients.map((item, index) => {
                     return( 
-                        <BurgerConstructorItem key={item._id} item = {item} index={index} />
+                        <BurgerConstructorItem /*key={item._id}*/ key = {index} item = {item} index={index} />
                     )
                     })) : (<div className={"ml-20 mt-25 pt-30"}><p className="text text_type_main-medium "> Добавьте игредиенты!</p></div>)
                     
