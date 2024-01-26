@@ -5,7 +5,7 @@ import BurgerConstructorItem from './burger-constructor-item/burger-constructor-
 import { Button, ConstructorElement, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 
 type BurgerConstructorProps = {
-    ingredients: TIngredientItem[]; // all_ingredientes   
+    ingredients: TIngredientItem[]; // all_ingredients   
     order: TOrderItem; // bun and ingredients 
     //orderIngredients: TIngredientItem[];
     //orderBun?: TIngredientItem;   
