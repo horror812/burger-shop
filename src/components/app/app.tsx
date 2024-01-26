@@ -1,4 +1,4 @@
-import {FC, useState} from 'react';
+import {FC, useState, useEffect} from 'react';
 
 import AppHeader from '../app-header/app-header'
 import BurgerIngrediets from '../burger-ingredients/burger-ingredients'
@@ -8,18 +8,33 @@ import Modal from '../modal/modal';
 import OrderDetails from '../order-details/order-details';
 
 import styles from './app.module.css'
-import appData from '../../utils/data'
+
 import appOrder from '../../utils/order'
 import { TIngredientItem } from '../../utils/types';
 import IngredientDetails from '../ingredient-details/ingredient-details';
 
+const apiLink = "https://norma.nomoreparties.space/api/ingredients"
+
 const App:FC = () => {
   
-  // во втором спринте Добавить api для загрузки и проверку 
-  // api.get или что-то такое
-  const apiData = appData 
-  const apiOrder = appOrder
+  
+  // apiOrder временный заказ
+  const apiOrder = appOrder;
 
+  // apiData load ingredients
+
+  const [apiData, setAPIData] = useState([]); 
+  useEffect(() => {
+    fetch(apiLink)
+        .then(res => {
+          if (res.ok) { return res.json(); }
+          return Promise.reject(`Ошибка ${res.status}`);
+        })
+        .then(data => setAPIData(data.data))
+        .catch(e => {console.log('Error: ' + e.message); });
+  }, []);
+
+  
   
   // order-modal
   const [orderModalVisible, setOrderModalVisible] = useState(false);
@@ -49,7 +64,7 @@ const App:FC = () => {
       {
         ingrModalVisible && ingrModalItem && 
         (
-          <Modal onClick={handleCloseIngrModal} header = "Св-ва Ингредиента">            
+          <Modal onClick={handleCloseIngrModal} header = "Детали Ингредиента">            
             <IngredientDetails item={ingrModalItem}  />
           </Modal>
         )
@@ -57,7 +72,7 @@ const App:FC = () => {
       {
         orderModalVisible &&
         (
-          <Modal onClick={handleCloseOrderModal} header = "Заказ">            
+          <Modal onClick={handleCloseOrderModal}>            
             <OrderDetails orderNumber={123}  />
           </Modal>
         )
