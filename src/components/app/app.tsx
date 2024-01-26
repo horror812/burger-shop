@@ -15,8 +15,7 @@ import IngredientDetails from '../ingredient-details/ingredient-details';
 
 const apiLink = "https://norma.nomoreparties.space/api/ingredients"
 
-const App:FC = () => {
-  
+const App:FC = () => {  
   
   // apiOrder временный заказ
   const apiOrder = appOrder;
@@ -33,8 +32,6 @@ const App:FC = () => {
         .then(data => setAPIData(data.data))
         .catch(e => {console.log('Error: ' + e.message); });
   }, []);
-
-  
   
   // order-modal
   const [orderModalVisible, setOrderModalVisible] = useState(false);
