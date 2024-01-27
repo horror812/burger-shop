@@ -9,7 +9,6 @@ import styles from './burger-ingredients-item.module.css'
 type BurgerIngredientsItemProps = {
   item: TIngredientItem; // item
   count?:number // counter
-  onItemClick?: (item: TIngredientItem)=>void; 
 } 
 
 const BurgerIngredientsItem: FC<BurgerIngredientsItemProps> = ({ item , count}) => {
