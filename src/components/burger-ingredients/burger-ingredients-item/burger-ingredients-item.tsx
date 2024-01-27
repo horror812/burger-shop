@@ -1,5 +1,5 @@
 import { FC, useState } from 'react';
-import { TIngredientItem } from '../../../utils/types';
+import { TIngredientItem} from '../../../utils/types';
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import IngredientDetails from '../../ingredient-details/ingredient-details';
 import Modal from '../../modal/modal';
@@ -7,8 +7,8 @@ import Modal from '../../modal/modal';
 import styles from './burger-ingredients-item.module.css'
 
 type BurgerIngredientsItemProps = {
+  count?:number; // counter
   item: TIngredientItem; // item
-  count?:number // counter
 } 
 
 const BurgerIngredientsItem: FC<BurgerIngredientsItemProps> = ({ item , count}) => {
@@ -46,6 +46,5 @@ const BurgerIngredientsItem: FC<BurgerIngredientsItemProps> = ({ item , count}) 
       </div>         
   );
 }
-
 
 export default BurgerIngredientsItem;
