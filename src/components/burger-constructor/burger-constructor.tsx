@@ -1,26 +1,32 @@
-import {FC} from 'react';
+import {FC, useState} from 'react';
 import styles from './burger-constructor.module.css'
 import { TIngredientItem, TOrderItem } from '../../utils/types';
 import BurgerConstructorItem from './burger-constructor-item/burger-constructor-item';
 import { Button, ConstructorElement, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+import Modal from '../modal/modal';
+import OrderDetails from '../order-details/order-details';
 
 type BurgerConstructorProps = {
     ingredients: TIngredientItem[]; // all_ingredients   
     order: TOrderItem; // bun and ingredients 
-    //orderIngredients: TIngredientItem[];
-    //orderBun?: TIngredientItem;   
-    onOrderClick: ()=>void
+    // orderIngredients: TIngredientItem[];
+    // orderBun?: TIngredientItem;   
 }
 
 const BurgerConstructor: FC<BurgerConstructorProps> = (props) => {
    
+    // order-modal
+    const [orderModalVisible, setOrderModalVisible] = useState(false);
+    const handleCloseOrderModal = () => { setOrderModalVisible(false) }
+    const handleOpenOrderModal = () => { setOrderModalVisible(true) }
+
     // order просто готовый бургер-заглушка сейчас
     // const allIngredients = props.ingredients
     const order = props.order    
     const bun = order.bun
     const orderIngredients = order.ingredients
     const totalSum = 1000 // bun.price + ingredients[...].price
-    const onOrderClick = props.onOrderClick
+    // const onOrderClick = props.onOrderClick
    
 return (<div className = {styles.main + " ml-5"} >    
         <div className={styles.container + " ml-4 mt-25"}>
@@ -68,14 +74,24 @@ return (<div className = {styles.main + " ml-5"} >
             size="large" 
             onClick={() => { 
             if(bun && orderIngredients && orderIngredients!.length >= 1) {
-                onOrderClick()
+                handleOpenOrderModal()               
             }
           }}
         >
           Оформить заказ
         </Button>
       </div>              
-        </div>        
+    </div>    
+
+    {
+        orderModalVisible &&
+        (
+          <Modal onClick={handleCloseOrderModal}>            
+            <OrderDetails orderNumber={123}  />
+          </Modal>
+        )
+      }
+
     </div>)    
 }
 

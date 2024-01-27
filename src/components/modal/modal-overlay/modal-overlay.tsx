@@ -9,9 +9,8 @@ type ModalOverlayProps = {
 }
 
 const ModalOverlay: FC<ModalOverlayProps> = ({ children, onClick }) => {
- 
   const modalRoot = document.getElementById("modals");
-
+  
   if(modalRoot) {
     return ReactDOM.createPortal(
       (
@@ -21,9 +20,9 @@ const ModalOverlay: FC<ModalOverlayProps> = ({ children, onClick }) => {
       ), 
       modalRoot
     );
-  } else {
-    return null;
-  }
+  } 
+  
+  return null;  
 };
 
 export default ModalOverlay;

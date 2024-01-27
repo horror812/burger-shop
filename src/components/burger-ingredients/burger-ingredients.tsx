@@ -7,27 +7,24 @@ import { TIngredientItem } from '../../utils/types';
 
 type BurgerIngredientsProps = { 
     ingredients: TIngredientItem[]; // data:TIngredientItem[]
-    onItemClick: (item:TIngredientItem)=>void
 }
 
 const BurgerIngredients: FC<BurgerIngredientsProps> = (props) =>{
-    const ingredients = props.ingredients //useAppSelector((store) => store.ingredientsItems.items);
-    const onItemClick = props.onItemClick
+
+    const {ingredients} = props 
+
+    const currentCategory = 0
+    const setCategory = (i:number) => { console.log("setCategory", i) }
 
     // fixed: to one memo
-    const {buns, mains, sauces} = useMemo(()=>{
+    const {buns, mains, sauces} = useMemo(()=>{   
         return {
             buns:ingredients.filter((item: TIngredientItem) => item.type === 'bun')
             , mains:ingredients.filter((item: TIngredientItem) => item.type === 'main')
             , sauces:ingredients.filter((item: TIngredientItem) => item.type === 'sauce')
         }
-    },[ingredients])
-
-    const currentCategory = 0
-    const setCategory = (i:number) => {
-        console.log("setCategory", i)
-    }
-
+    },[ingredients]) 
+    
     return (
            <div className={styles.main + " mr-5"}>
                <div className={styles.header + " mt-10"}>
@@ -35,9 +32,9 @@ const BurgerIngredients: FC<BurgerIngredientsProps> = (props) =>{
                </div>          
                <BurgerIngredientsTabs currentCategory={currentCategory} setCategory={setCategory} />
                <section className={styles.scroll} id = "tabsDiv" >
-                    <BurgerIngredientsItemList index={0} type='bun' title='Булки' ingredients={buns} onItemClick = {onItemClick}/>
-                    <BurgerIngredientsItemList index={1} type='sauce' title='Соусы' ingredients={sauces} onItemClick = {onItemClick}/>
-                    <BurgerIngredientsItemList index={2} type='main' title='Начинки' ingredients={mains} onItemClick = {onItemClick} />
+                    <BurgerIngredientsItemList index={0} type='bun' title='Булки' ingredients={buns} />
+                    <BurgerIngredientsItemList index={1} type='sauce' title='Соусы' ingredients={sauces} />
+                    <BurgerIngredientsItemList index={2} type='main' title='Начинки' ingredients={mains} />
                </section>
            </div>
        )

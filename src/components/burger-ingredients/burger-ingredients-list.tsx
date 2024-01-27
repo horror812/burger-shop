@@ -9,12 +9,11 @@ interface BurgerIngredientsItemListProps {
   index: number;
   type?: string; 
   ingredients: TIngredientItem[];
-  onItemClick?: (item:TIngredientItem)=>void;
 }
 
 const BurgerIngredientsItemList: FC<BurgerIngredientsItemListProps> = (props) => {
   
-  const { title, ingredients,  index, onItemClick } = props;
+  const { title, ingredients,index } = props;
 
   return (
     <div className={styles.ingrList}>
@@ -23,7 +22,7 @@ const BurgerIngredientsItemList: FC<BurgerIngredientsItemListProps> = (props) =>
       </p>
       <section className={styles.ingrContainer + " ml-4"}>
         {
-          ingredients.map((item) => <BurgerIngredientsItem key={item._id} item={item} onItemClick = {onItemClick}/>)
+          ingredients.map((item) => <BurgerIngredientsItem key={item._id} item={item}/>)
         }
       </section>
     </div>
