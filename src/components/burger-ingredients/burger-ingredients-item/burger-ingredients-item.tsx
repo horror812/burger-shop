@@ -14,7 +14,7 @@ type BurgerIngredientsItemProps = {
 const BurgerIngredientsItem: FC<BurgerIngredientsItemProps> = ({ item , count}) => {
   
   // const ref = useRef<HTMLDivElement | null>(null);
-  // count = item._v ??
+  // count == item._v ??
   // потом поменяю  нв Link кoгда дойду до Реакт-Роутер
   
   const [modalVisible, setModalVisible] = useState(false);

@@ -1,4 +1,4 @@
-//import PropTypes from "prop-types";
+import PropTypes from "prop-types";
 
 export type TIngredientItem = {
     dragId?: string;
@@ -16,7 +16,6 @@ export type TIngredientItem = {
     __v: number;
 }
 
-/*
 export const IngredientItemPropTypes = PropTypes.shape({
     _id: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
@@ -31,7 +30,6 @@ export const IngredientItemPropTypes = PropTypes.shape({
     image_large: PropTypes.string.isRequired,
     __v: PropTypes.number.isRequired,
 });
-*/
 
 export type TOrderIds = {
     bun?: string, // _id
