@@ -6,4 +6,4 @@ Alex Orlanski 2024
 2) Перемесил модальные окна в BurgerConstructor BurgerIngredietsItem соответственно
 3) Добавил загрузку api c async и getIngredients в utils.api
 
-Буду благодраен любым советам, как всегда!
+
