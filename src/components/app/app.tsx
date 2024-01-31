@@ -1,25 +1,40 @@
-import {FC} from 'react';
+import {FC, useState, useEffect} from 'react';
 
 import AppHeader from '../app-header/app-header'
 import BurgerIngrediets from '../burger-ingredients/burger-ingredients'
 import BurgerConstructor from '../burger-constructor/burger-constructor'
+import {TIngredientItem} from '../../utils/types';
 
 import styles from './app.module.css'
-import appData from '../../utils/data'
+
+import {getIngredients} from '../../utils/api'
 import appOrder from '../../utils/order'
 
-const App:FC = () => {
+const App:FC = () => {  
   
-  const apiData = appData // api.get ??
-  const apiOrder = appOrder
+  // apiOrder временный заказ
+  const apiOrder = appOrder;
+
+  // apiData load ingredients
+  const [apiData, setAPIData] = useState<TIngredientItem[]|null>(null);   
+
+  useEffect(() => {    
+    const fetchData = async() => {
+      const {data} = await getIngredients()  
+      setAPIData(data)
+    }
+    fetchData();     
+  }, []);
 
   return (
     <>
       <AppHeader />  
       <main className={styles.main}>
-        <BurgerIngrediets ingredientes = {apiData} /> 
-        <BurgerConstructor ingredientes = {apiData} order = {apiOrder}/>
-      </main>
+        {apiData && <>          
+            <BurgerIngrediets ingredients = {apiData}/> 
+            <BurgerConstructor ingredients = {apiData} order = {apiOrder}/>            
+        </>}
+      </main>         
     </>); 
 }
 

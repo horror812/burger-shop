@@ -14,8 +14,11 @@
 
 body {
   margin: 0;
-  display: flex;
+  /*display: flex;
   place-items: none;
   min-width: 320px;
-  min-height: 100vh;
+  min-height: 100vh;*/
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  min-height: 100dvh;
 }
