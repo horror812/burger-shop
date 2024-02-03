@@ -16,21 +16,27 @@ const App:FC = () => {
   const apiOrder = appOrder;
 
   // apiData load ingredients
-  const [apiData, setAPIData] = useState<TIngredientItem[]|null>(null);   
+  const [apiData, setAPIData] = useState<TIngredientItem[]|null>(null);  
+  const [isError, setIsError] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);   
 
   useEffect(() => {    
     const fetchData = async() => {
-      const {data} = await getIngredients()  
-      setAPIData(data)
+       await getIngredients()
+        .then((res)=>{setAPIData(res.data)})
+        .catch(()=>{setIsError(true) })
+        .finally(()=>{setIsLoading(false)})      
     }
     fetchData();     
   }, []);
 
+  //{isError && "Error Message or Component"  }
+
   return (
     <>
       <AppHeader />  
-      <main className={styles.main}>
-        {apiData && <>          
+      <main className={styles.main}>       
+        {apiData && !isError && !isLoading && <>          
             <BurgerIngrediets ingredients = {apiData}/> 
             <BurgerConstructor ingredients = {apiData} order = {apiOrder}/>            
         </>}

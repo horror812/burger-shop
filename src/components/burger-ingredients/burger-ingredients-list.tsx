@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC , RefObject} from 'react';
 import { TIngredientItem } from '../../utils/types';
 
 import styles from './burger-ingredients.module.css'
@@ -9,15 +9,16 @@ interface BurgerIngredientsItemListProps {
   index: number;
   type?: string; 
   ingredients: TIngredientItem[];
+  ref?: RefObject<HTMLDivElement>
 }
 
 const BurgerIngredientsItemList: FC<BurgerIngredientsItemListProps> = (props) => {
   
-  const { title, ingredients,index } = props;
-
+  const { title, ingredients, index, ref} = props;
+  
   return (
-    <div className={styles.ingrList}>
-      <p id={index.toString()}  className='text text_type_main-medium mb-6'>
+    <div ref = {ref} className={styles.ingrList} >
+      <p id = {index.toString()}  className='text text_type_main-medium mb-6'>
         {title}
       </p>
       <section className={styles.ingrContainer + " ml-4"}>

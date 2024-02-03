@@ -1,7 +1,7 @@
 import { FC, useState } from 'react';
 import { TIngredientItem} from '../../../utils/types';
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import IngredientDetails from '../../ingredient-details/ingredient-details';
+import IngredientDetails from '../ingredient-details/ingredient-details';
 import Modal from '../../modal/modal';
 
 import styles from './burger-ingredients-item.module.css'

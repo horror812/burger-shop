@@ -4,7 +4,7 @@ import { TIngredientItem, TOrderItem } from '../../utils/types';
 import BurgerConstructorItem from './burger-constructor-item/burger-constructor-item';
 import { Button, ConstructorElement, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import Modal from '../modal/modal';
-import OrderDetails from '../order-details/order-details';
+import OrderDetails from './order-details/order-details';
 
 type BurgerConstructorProps = {
     ingredients: TIngredientItem[]; // all_ingredients   
