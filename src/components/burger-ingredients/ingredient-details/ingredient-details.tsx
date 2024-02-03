@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import styles from './ingredient-details.module.css';
-import { TIngredientItem } from '../../utils/types';
+import { TIngredientItem } from '../../../utils/types';
 
 type IngredientDetailsProps = {
     item:TIngredientItem
