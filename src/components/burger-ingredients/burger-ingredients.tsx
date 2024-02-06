@@ -58,7 +58,7 @@ const BurgerIngredients: FC = () =>{
     return (
         <div className={styles.main}>
             <div className={styles.header + " mb+10"}>
-                <p>Соберите бургер</p>
+                <p>Соберите бургер (drag не работает!! add только по клику)</p>
             </div>   
             <section className={styles.ingrTab + " mb-10"}>
                 <Tab value={'bun'} active = {activeTabIndex == 0} onClick={()=>setTabIndex(0)}>Булки</Tab>
