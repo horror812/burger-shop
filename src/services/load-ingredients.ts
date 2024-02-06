@@ -1,47 +1,18 @@
-import { UnknownAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { getIngredients } from '../utils/api';
-import { IIngredient } from '../utils/types';
+import { EThunkStatus, IIngredient, ILoadIngredientsData, ILoadIngredientsAction } from '../utils/types';
 
 export interface ILoadIngredientsState {
   ingredients:IIngredient[];
-  isLoading: boolean;
-  isRequest: boolean;
-  isFailed: boolean; 
-}
-
-export interface ILoadIngredientsAction extends UnknownAction {
-  payload?: {success?: boolean, data?:IIngredient[]}
+  status: EThunkStatus;
 }
 
 // INIT-STATE:
 
 const initialState:ILoadIngredientsState = {
-  ingredients: [], 
-  isLoading: false, 
-  isRequest: false,
-  isFailed: false  
+  ingredients: [],
+  status: EThunkStatus.UNDEFINED 
 };
-
-// REDUCERS:
-
-const requestReducer = (state:ILoadIngredientsState) => {
-  state.isRequest = true;
-  state.isFailed = false;
-  state.isLoading = true;
-}
-
-const successReducer = (state:ILoadIngredientsState, action:ILoadIngredientsAction) => {
-  const payload = action.payload; 
-  state.ingredients = (payload && payload.success && payload.data) ? payload.data : initialState.ingredients;
-  state.isRequest = false;
-  state.isLoading = false;
-}
-
-const failedReducer = (state:ILoadIngredientsState) => {
-  state.isRequest = false;
-  state.isFailed = true;
-  state.isLoading = false;
-}
 
 // THUNK:
 
@@ -61,9 +32,18 @@ const loadIngredientsSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(loadIngredientsThunk.pending, requestReducer)
-      .addCase(loadIngredientsThunk.fulfilled, successReducer)
-      .addCase(loadIngredientsThunk.rejected, failedReducer);
+      .addCase(loadIngredientsThunk.pending, (state:ILoadIngredientsState) => {
+        state.ingredients = initialState.ingredients;
+        state.status = EThunkStatus.REQUEST;
+      })
+      .addCase(loadIngredientsThunk.fulfilled, (state:ILoadIngredientsState, action:ILoadIngredientsAction) => {
+        const res:ILoadIngredientsData = action.payload; 
+        state.ingredients = (res && res.success && res.data) ? res.data : initialState.ingredients;
+        state.status = EThunkStatus.SUCCESS;  
+      })
+      .addCase(loadIngredientsThunk.rejected, (state:ILoadIngredientsState) => { 
+        state.status = EThunkStatus.FAILED;
+      });
     }
 });
 

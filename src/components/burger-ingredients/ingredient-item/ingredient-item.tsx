@@ -12,10 +12,11 @@ type IngredientItemProps = {
 } 
 
 const IngredientItem: FC<IngredientItemProps> = ({ item , count}) => {
+  
   return ( 
       <div className = {styles.item + " mb-8"}>
         {
-          (count && count > 0) && 
+          count !== undefined && count > 0 && 
           (<span className={styles.count + " text_type_digits-default"}>{count}</span>) 
         }  
         <img src={item.image} alt={item.name}/>

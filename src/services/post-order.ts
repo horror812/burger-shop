@@ -1,51 +1,25 @@
-import { UnknownAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { postOrder } from '../utils/api';
-import { IOrder } from '../utils/types';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { postOrderIngredients } from '../utils/api';
+import { EThunkStatus, IPostOrderData, IngredientIds } from '../utils/types';
 
 export interface IPostOrderState {
-  order:IOrder|null;
-  isLoading: boolean;
-  isRequest: boolean;
-  isFailed: boolean; 
+  orderInfo: null|{number?:number, name?:string};
+  status:EThunkStatus; 
 }
 
 // INIT-STATE:
 
 const initialState:IPostOrderState = {
-  order: null, 
-  isLoading: false, 
-  isRequest: false,
-  isFailed: false  
+  orderInfo:null,
+  status:EThunkStatus.UNDEFINED
 };
-
-// REDUCERS:
-
-const requestReducer = (state:IPostOrderState) => {
-  state.isRequest = true;
-  state.isFailed = false;
-  state.isLoading = true;
-  state.order = null; 
-}
-
-const successReducer = (state:IPostOrderState, action:UnknownAction) => {
-  state.order = action.payload ? action.payload as IOrder : initialState.order;  
-  state.isRequest = false;
-  state.isLoading = false;
-}
-
-const failedReducer = (state:IPostOrderState) => {
-  state.isRequest = false;
-  state.isFailed = true;
-  state.isLoading = false;
-  state.order = null;
-}
 
 // THUNK:
 
 export const postOrderThunk = createAsyncThunk(
   'postOrderThunk',
-  async (order:IOrder) => {
-    const response = await postOrder(order);
+  async (orderIngredients:IngredientIds) => {
+    const response = await postOrderIngredients(orderIngredients);
     return response;
   }
 );
@@ -58,13 +32,23 @@ const postOrderSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(postOrderThunk.pending, requestReducer)
-      .addCase(postOrderThunk.fulfilled, successReducer)
-      .addCase(postOrderThunk.rejected, failedReducer);
+      .addCase(postOrderThunk.pending, (state:IPostOrderState) => {
+        state.orderInfo = null; 
+        state.status = EThunkStatus.REQUEST;
+      })
+      .addCase(postOrderThunk.fulfilled, (state:IPostOrderState, action) => {
+        const res:IPostOrderData = action.payload; 
+        state.orderInfo = (res.success && res.order && res.order.number) ? {number: res.order.number, name: res.name} : null;
+        state.status = EThunkStatus.SUCCESS;
+      })
+      .addCase(postOrderThunk.rejected, (state:IPostOrderState) => {
+        state.orderInfo = null;
+        state.status = EThunkStatus.FAILED;
+      });
     }
 });
 
 // ACTIONS: 
-/* export const actions = {***} = loadIngredients.actions; */
+/* export const actions = {***} = postOrderSlice.actions; */
 
 export default postOrderSlice;

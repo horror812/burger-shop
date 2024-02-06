@@ -1,3 +1,6 @@
+import { PayloadAction } from "@reduxjs/toolkit";
+
+// ingredients \\ 
 
 export enum EIngredientType {
     BUN = 'bun',
@@ -19,30 +22,32 @@ export interface IIngredient {
     image_mobile: string;
     image_large: string;
     __v: number;
-    uid?: number; // + unique_id
+
+    uid?: string; // + unique_id
 }
 
-export enum EOrderStatus { 
-    CREATED = 'created', 
-    PENDING = 'pending', 
-    DONE = 'done' 
+export type IngredientIds = string[];
+
+// \\
+
+export enum EThunkStatus {
+    REQUEST = 'request', // LOADING
+    SUCCESS = 'success', 
+    FAILED = 'failed',
+    UNDEFINED = 'undefined'
 }
 
-export interface IOrderOwner {
-    name: string; 
-    email: string; 
-    createdAt: string;
-    updatedAt: string;
-}
+// action-types \\
 
-export interface IOrder {
-    ingredients: IIngredient[];
-    _id: string;
-    name: string;
-    status: EOrderStatus;
-    number: number;    
-    price: number;    
-    createdAt: string;
-    updatedAt: string;
-    owner: IOrderOwner;    
-}
+export interface INumberAction extends PayloadAction<number> {}
+export interface INullOrNumberAction extends PayloadAction<number|null> {}
+
+export interface IIngredientAction extends PayloadAction<IIngredient> {}
+export interface IIdOrIngredientAction extends PayloadAction<IIngredient|string|null> {}
+export interface INullOrIngredientAction extends PayloadAction<IIngredient|null> {}
+
+export interface ILoadIngredientsData {success?: boolean, data?:IIngredient[]} 
+export interface ILoadIngredientsAction extends PayloadAction<ILoadIngredientsData> {}
+
+export interface IPostOrderData {success?: boolean, name?:string, order?:{number:number}} 
+export interface IPostOrderAction extends PayloadAction<IPostOrderData>{}

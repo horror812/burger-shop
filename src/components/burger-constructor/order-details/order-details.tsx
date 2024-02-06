@@ -3,10 +3,11 @@ import styles from './order-details.module.css'
 import doneIcon from '../../../images/done.svg';
 
 type OrderDetailsProps = {
-  orderNumber:number // или сторка? 
+  number?:number, 
+  // name?:string
 }
 
-const OrderDetails:FC<OrderDetailsProps> = ({orderNumber}) => {
+const OrderDetails:FC<OrderDetailsProps> = ({number: orderNumber}) => {
   return (
     <section className={styles.orderDetails + " pt-30 pb-30"}>
       <span className={styles.orderNumber + " text text_type_digits-large mb-8"}>
