@@ -1,10 +1,10 @@
-import { PayloadAction, UnknownAction, createSlice } from '@reduxjs/toolkit';
-import { IIngredient, IOrder } from '../utils/types';
+import { createSlice } from '@reduxjs/toolkit';
+import { INullOrIngredientAction, INullOrNumberAction as INullOrNumberAction, INumberAction, IIngredient } from '../utils/types';
 
 export interface IActiveState {
-    activeTabIndex:number; // не уверен что нужно ? 
+    activeTabIndex:number; // current tab-state
     activeIngredient:null|IIngredient; // if exists then modal
-    activeOrder:null|IOrder; // if exists then modal
+    activeOrderNumber:null|number; // if exists then modal
 }
 
 // INIT-STATE:
@@ -12,52 +12,39 @@ export interface IActiveState {
 const initialState:IActiveState = {
     activeTabIndex: 0,
     activeIngredient: null, 
-    activeOrder:null
+    activeOrderNumber:null
 };
-
-// REDUCERS: 
-
-const setTabIndexReducer = (state:IActiveState, action:PayloadAction<number>)=>{
-    state.activeTabIndex = action.payload ? action.payload as number : 0
-}
-
-const setOrderReducer = (state:IActiveState, action:UnknownAction)=>{
-    state.activeOrder = action.payload ? action.payload as IOrder : null
-}
-
-const setIngredientReducer = (state:IActiveState, action:PayloadAction<IIngredient>)=>{
-    state.activeIngredient = action.payload ? action.payload as IIngredient : null
-}
-
-const freeIngredientReducer = (state:IActiveState)=>{
-    state.activeIngredient = null
-}
-
-const freeOrderReducer = (state:IActiveState)=>{
-    state.activeOrder = null
-}
-
 
 // SLICE:
 
 const activeSlice = createSlice({
-  name: 'active',
-  initialState,
-  reducers: {          
-    setActiveTabIndex: setTabIndexReducer,
-    setActiveOrder: setOrderReducer,
-    setActiveIngredient: setIngredientReducer,
-    freeActiveOrder: freeOrderReducer,
-    freeActiveIngredient: freeIngredientReducer,
-  }
+    name: 'active',
+    initialState,
+    reducers: {          
+        // active-tab(bun|sauce|main)
+        setActiveTabIndex:(state:IActiveState, action:INumberAction)=>{ state.activeTabIndex = action.payload; },
+
+        // show modal-ingredient-details
+        setActiveIngredient: (state:IActiveState, action:INullOrIngredientAction)=>{ state.activeIngredient = action.payload;},
+        freeActiveIngredient: (state:IActiveState)=>{state.activeIngredient = null; },
+        
+        // show modal-order-details
+        setActiveOrderNumber: (state:IActiveState, action:INullOrNumberAction)=>{ state.activeOrderNumber = action.payload;},
+        freeActiveOrderNumber: (state:IActiveState)=>{state.activeOrderNumber = null; },
+    }
 });
 
 
 // ACTIONS:
 
-export const { setActiveTabIndex, 
-    setActiveOrder, freeActiveOrder,
-    setActiveIngredient, freeActiveIngredient } 
-    = activeSlice.actions;
+export const { 
+    setActiveTabIndex, 
+    setActiveOrderNumber, 
+    freeActiveOrderNumber,
+    setActiveIngredient, 
+    freeActiveIngredient,
+} = activeSlice.actions;
+
+// export const activeReducer = activeSlice.reducer;
 
 export default activeSlice;

@@ -1,17 +1,20 @@
 import {FC, useCallback, useMemo, useRef} from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
-import styles from './burger-ingredients.module.css'
+import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 
 import IngredientsItemList from './ingredients-list/ingredients-list';
-import { EIngredientType} from '../../utils/types';
-import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useDispatch, useSelector } from 'react-redux';
-import { getActiveState, getLoadIngredientsState } from '../../services/selectors';
 import Modal from '../modal/modal';
 import IngredientDetails from './ingredient-details/ingredient-details';
+
+import { EIngredientType} from '../../utils/types';
+import { getActiveState, getLoadIngredientsState } from '../../services/selectors';
 import { StoreDispatch } from '../../services/store';
 import { freeActiveIngredient, setActiveTabIndex } from '../../services/active';
+
 import { calcScrollIndex, filterIngredientsByType, updateScrollByIndex  } from '../../utils/helpers';
+
+import styles from './burger-ingredients.module.css'
 
 const BurgerIngredients: FC = () =>{
 
@@ -35,7 +38,7 @@ const BurgerIngredients: FC = () =>{
      },[ingredients])   
    
     // close-active-modal
-    const handleCloseModal = useCallback(()=>{
+    const handleCloseModal = useCallback(()=>{        
         dispatch(freeActiveIngredient());
     }, [dispatch]);
    
@@ -51,7 +54,7 @@ const BurgerIngredients: FC = () =>{
         dispatch(setActiveTabIndex(index));  
     },[dispatch]);  
       
-    // 
+    // component
     return (
         <div className={styles.main}>
             <div className={styles.header + " mb+10"}>
