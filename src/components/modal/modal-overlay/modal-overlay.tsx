@@ -4,7 +4,7 @@ import styles from './modal-overlay.module.css';
 
 
 type ModalOverlayProps = {
-  onClick: () => void; 
+  onClick?: () => void; 
   children: React.ReactElement
 }
 

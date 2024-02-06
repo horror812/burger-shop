@@ -1,97 +1,43 @@
-import {FC, useState} from 'react';
-import styles from './burger-constructor.module.css'
-import { TIngredientItem, TOrderItem } from '../../utils/types';
-import BurgerConstructorItem from './burger-constructor-item/burger-constructor-item';
-import { Button, ConstructorElement, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+import {FC, useCallback, useMemo} from 'react';
 import Modal from '../modal/modal';
 import OrderDetails from './order-details/order-details';
+import { StoreDispatch } from '../../services/store';
+import { useDispatch, useSelector } from 'react-redux';
+import { getActiveState, getConstructorBurgerState } from '../../services/selectors';
+import { freeActiveOrder } from '../../services/active';
+import SubmitButton from './submit-button/submit-button';
+import ConstructorList from './constructor-list/constructor-list';
 
-type BurgerConstructorProps = {
-    ingredients: TIngredientItem[]; // all_ingredients   
-    order: TOrderItem; // bun and ingredients 
-    // orderIngredients: TIngredientItem[];
-    // orderBun?: TIngredientItem;   
-}
+import styles from './burger-constructor.module.css'
 
-const BurgerConstructor: FC<BurgerConstructorProps> = (props) => {
+const BurgerConstructor: FC = () => {
+
+    const dispatch:StoreDispatch = useDispatch();
+
+    const {activeOrder} = useSelector(getActiveState);
+    const {bun, main} = useSelector(getConstructorBurgerState);
+        
+    // close-modal-order:
+    const handleCloseModal = useCallback(()=>{
+      dispatch(freeActiveOrder());
+    }, [dispatch])
+       
+    // calc-total-sum:
+    const totalPrice = useMemo(() => {
+      return main.reduce((acc, curr) => acc + curr.price, 0) + (bun ? bun.price * 2 : 0);
+    }, [main, bun]);      
    
-    // order-modal
-    const [orderModalVisible, setOrderModalVisible] = useState(false);
-    const handleCloseOrderModal = () => { setOrderModalVisible(false) }
-    const handleOpenOrderModal = () => { setOrderModalVisible(true) }
+    // component:
+    return (<div className = {styles.main + " ml-5"} >          
+      <ConstructorList />
 
-    // order просто готовый бургер-заглушка сейчас
-    // const allIngredients = props.ingredients
-    const order = props.order    
-    const bun = order.bun
-    const orderIngredients = order.ingredients
-    const totalSum = 1000 // bun.price + ingredients[...].price
-    // const onOrderClick = props.onOrderClick
-   
-return (<div className = {styles.main + " ml-5"} >    
-        <div className={styles.container + " ml-4 mt-25"}>
-            {bun ? (<div className={"ml-8"} >
-                                        <ConstructorElement
-                                            type="top"
-                                            isLocked={true}
-                                            text= {bun.name + " (верх)"}
-                                            price={bun.price}
-                                            thumbnail={bun.image_mobile}
-                                        />
-                                    </div>) : (<div className={"pt-10 ml-20 pl-15"}>
-                        <p className="text text_type_main-medium "> Добавьте булку </p></div>)
-            }
-            <div className={styles.scroll + " mb-3 mt-3" }  >
-                {                 
-                orderIngredients && orderIngredients.length >0 ? (
-                    orderIngredients.map((item, index) => {
-                    return( 
-                        <BurgerConstructorItem /*key={item._id}*/ key = {index} item = {item} index={index} />
-                    )
-                    })) : (<div className={"ml-20 mt-25 pt-30"}><p className="text text_type_main-medium "> Добавьте игредиенты!</p></div>)
-                    
-                }
-            </div>
-            {bun ?
-                ( <div className={"ml-8"} >
-                            <ConstructorElement
-                                type="bottom"
-                                isLocked={true}
-                                text= {bun.name + " (низ)"}
-                                price={bun.price}
-                                thumbnail={bun.image_mobile}
-                            />
-                        </div>) : (<div className={"pt-10 ml-20 pl-15"}><p className="text text_type_main-medium "> Добавьте булку </p></div>)
-            }
-            <div className={`${styles.total} mt-10 pr-8`}>
-        <span className={`${styles.totalSum} mr-10 text_type_digits-medium`}>
-          {totalSum}
-          <CurrencyIcon type="primary" />
-        </span>
-        <Button 
-            htmlType="button"
-            type="primary" 
-            size="large" 
-            onClick={() => { 
-            if(bun && orderIngredients && orderIngredients!.length >= 1) {
-                handleOpenOrderModal()               
-            }
-          }}
-        >
-          Оформить заказ
-        </Button>
-      </div>              
-    </div>    
-
-    {
-        orderModalVisible &&
-        (
-          <Modal onClick={handleCloseOrderModal}>            
-            <OrderDetails orderNumber={123}  />
-          </Modal>
-        )
-      }
-
+      {totalPrice > 0 && bun && main.length > 0 && 
+          (<SubmitButton onClick={()=>{}} totalPrice={totalPrice}/>)}       
+      
+      {activeOrder && activeOrder.number &&
+          (<Modal onClick={handleCloseModal}>            
+            <OrderDetails orderNumber={activeOrder.number} />
+          </Modal>)}
     </div>)    
 }
 

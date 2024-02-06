@@ -1,10 +1,15 @@
-import PropTypes from "prop-types";
 
-export type TIngredientItem = {
+export enum EIngredientType {
+    BUN = 'bun',
+    MAIN = 'main',
+    SOUCE = 'sauce'
+}
+
+export interface IIngredient {
     dragId?: string;
     _id: string;
     name: string;
-    type: string;
+    type: EIngredientType;
     proteins: number;
     fat: number;
     carbohydrates: number;
@@ -14,29 +19,30 @@ export type TIngredientItem = {
     image_mobile: string;
     image_large: string;
     __v: number;
+    uid?: number; // + unique_id
 }
 
-export const IngredientItemPropTypes = PropTypes.shape({
-    _id: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
-    type: PropTypes.string.isRequired,
-    proteins: PropTypes.number.isRequired,
-    fat: PropTypes.number.isRequired,
-    carbohydrates: PropTypes.number.isRequired,
-    calories: PropTypes.number.isRequired,
-    price: PropTypes.number.isRequired,
-    image: PropTypes.string.isRequired,
-    image_mobile: PropTypes.string.isRequired,
-    image_large: PropTypes.string.isRequired,
-    __v: PropTypes.number.isRequired,
-});
-
-export type TOrderIds = {
-    bun?: string, // _id
-    ingredients?: string[] // _ids
+export enum EOrderStatus { 
+    CREATED = 'created', 
+    PENDING = 'pending', 
+    DONE = 'done' 
 }
 
-export type TOrderItem = {
-    bun?:TIngredientItem
-    ingredients?:TIngredientItem[]
+export interface IOrderOwner {
+    name: string; 
+    email: string; 
+    createdAt: string;
+    updatedAt: string;
+}
+
+export interface IOrder {
+    ingredients: IIngredient[];
+    _id: string;
+    name: string;
+    status: EOrderStatus;
+    number: number;    
+    price: number;    
+    createdAt: string;
+    updatedAt: string;
+    owner: IOrderOwner;    
 }
