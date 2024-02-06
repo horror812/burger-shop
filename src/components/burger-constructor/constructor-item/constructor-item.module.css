@@ -1,0 +1,17 @@
+.item {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.item:last-child {
+  margin-bottom: 0;
+}
+
+.item > div {
+  flex: 1;
+}
+
+.item svg {
+  margin-right: 5px;
+}

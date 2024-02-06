@@ -1,0 +1,14 @@
+.total {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.totalSum {
+  display: flex;
+  align-items: center;
+}
+
+.totalSum svg {
+  margin-left: 9px;
+}
