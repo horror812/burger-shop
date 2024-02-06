@@ -1,14 +1,12 @@
 import { FC } from 'react';
 import styles from './ingredient-details.module.css';
-import { TIngredientItem } from '../../../utils/types';
+import { IIngredient } from '../../../utils/types';
 
 type IngredientDetailsProps = {
-    item:TIngredientItem
+    item:IIngredient
 }
 
-const IngredientDetails:FC<IngredientDetailsProps> = (props) => {
-    
-const item = props.item
+const IngredientDetails:FC<IngredientDetailsProps> = ({item}) => {
   return (
     <section className={styles.root}>
       <img src={item.image_large} alt={item.name} />

@@ -6,10 +6,7 @@ type OrderDetailsProps = {
   orderNumber:number // или сторка? 
 }
 
-const OrderDetails:FC<OrderDetailsProps> = (props) => {
-
-  const orderNumber = props.orderNumber;
-
+const OrderDetails:FC<OrderDetailsProps> = ({orderNumber}) => {
   return (
     <section className={styles.orderDetails + " pt-30 pb-30"}>
       <span className={styles.orderNumber + " text text_type_digits-large mb-8"}>

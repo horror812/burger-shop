@@ -5,7 +5,7 @@ import styles from './modal.module.css';
 
 type ModalProps = {
   header?: string;
-  onClick: () => void;
+  onClick?: () => void;
   children: React.ReactElement
 }
 
