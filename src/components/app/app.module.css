@@ -3,5 +3,8 @@
   display: flex;
   justify-content: center;
   /*padding: 80px 40px 40px;*/
+  /*height: 100vh;*/
   overflow: hidden;
+  margin: auto;
+  height: calc(100vh - 80px);
 }

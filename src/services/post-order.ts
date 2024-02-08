@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { postOrderIngredients } from '../utils/api';
-import { EThunkStatus, IPostOrderData, IngredientIds } from '../utils/types';
+import { EThunkStatus, IPostOrderData } from '../utils/types';
 
 export interface IPostOrderState {
   orderInfo: null|{number?:number, name?:string};
@@ -18,10 +18,7 @@ const initialState:IPostOrderState = {
 
 export const postOrderThunk = createAsyncThunk(
   'postOrderThunk',
-  async (orderIngredients:IngredientIds) => {
-    const response = await postOrderIngredients(orderIngredients);
-    return response;
-  }
+  postOrderIngredients
 );
 
 // SLICE:
@@ -32,16 +29,16 @@ const postOrderSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(postOrderThunk.pending, (state:IPostOrderState) => {
+      .addCase(postOrderThunk.pending, (state) => {
         state.orderInfo = null; 
         state.status = EThunkStatus.REQUEST;
       })
-      .addCase(postOrderThunk.fulfilled, (state:IPostOrderState, action) => {
+      .addCase(postOrderThunk.fulfilled, (state, action) => {
         const res:IPostOrderData = action.payload; 
         state.orderInfo = (res.success && res.order && res.order.number) ? {number: res.order.number, name: res.name} : null;
         state.status = EThunkStatus.SUCCESS;
       })
-      .addCase(postOrderThunk.rejected, (state:IPostOrderState) => {
+      .addCase(postOrderThunk.rejected, (state) => {
         state.orderInfo = null;
         state.status = EThunkStatus.FAILED;
       });

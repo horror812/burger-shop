@@ -1,12 +1,11 @@
 import {FC, useCallback, useEffect, useMemo} from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 
 import Modal from '../modal/modal';
 import OrderDetails from './order-details/order-details';
 import SubmitButton from './submit-button/submit-button';
 import ConstructorList from './constructor-list/constructor-list';
 
-import { StoreDispatch } from '../../services/store';
+import { StoreDispatch, useStoreDispatch, useStoreSelector } from '../../services/store';
 import { getActiveState, getConstructorBurgerState, getPostOrderState } from '../../services/selectors';
 import { freeActiveOrderNumber, setActiveOrderNumber } from '../../services/active';
 import { clearIngredients } from '../../services/constructor-burger';
@@ -18,11 +17,11 @@ import styles from './burger-constructor.module.css'
 
 const BurgerConstructor: FC = () => {
 
-    const dispatch:StoreDispatch = useDispatch();
+    const dispatch:StoreDispatch = useStoreDispatch();
     
-    const {bun, main} = useSelector(getConstructorBurgerState);
-    const {orderInfo, status} = useSelector(getPostOrderState);      
-    const {activeOrderNumber} = useSelector(getActiveState);
+    const {bun, main} = useStoreSelector(getConstructorBurgerState);
+    const {orderInfo, status} = useStoreSelector(getPostOrderState);      
+    const {activeOrderNumber} = useStoreSelector(getActiveState);
 
     // canSubmit / calc-total-sum:
     const totalPrice = useMemo(() => {      

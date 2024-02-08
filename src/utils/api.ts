@@ -1,30 +1,34 @@
 import { IngredientIds } from "./types";
 
+const API_URL = 'https://norma.nomoreparties.space/api'
 
-const API_URL_GET_INGREDIENTS = "https://norma.nomoreparties.space/api/ingredients"
-const API_URL_POST_ORDER ='https://norma.nomoreparties.space/api/orders';
+const checkResponse = (res:Response) => {
+  return res.ok ? res.json() : Promise.reject('Connection has failed');
+};
 
+/* при этой записи vscode рекомендует доавить async
+const request = (url:RequestInfo, options?:RequestInit) => {
+  return fetch(url, options).then(checkResponse);
+};*/
+
+const request = async(url: RequestInfo, options?: RequestInit) => {
+  const res = await fetch(url, options);
+  return checkResponse(res);
+};
 
 export const getIngredients = async () => {
-    const res = await fetch(API_URL_GET_INGREDIENTS)
-      .then(res => {
-        if (res.ok) { return res.json(); }
-        return Promise.reject("Error in getIngredients " + res.status);
-      });
-    return res;
-}
+  const res = await request(API_URL+'/ingredients'); 
+  return res;
+};
 
 export const postOrderIngredients = async (ingredients:IngredientIds)=> { 
-  const res = await fetch(API_URL_POST_ORDER,{
+  const res = await request(API_URL+'/orders',{
     method: 'POST',
     headers: {'Content-Type': 'application/json' },
     body: JSON.stringify({ ingredients: ingredients })
-  }).then(res => {
-    if (res.ok) { return res.json(); }
-    return Promise.reject("Error in postOrderIngredients " + res.status);
   });
   return res;
-}
+};
 
 
  

@@ -1,5 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { combineReducers } from 'redux';
+import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 
 import loadIngredientsSlice, { ILoadIngredientsState } from './load-ingredients';
 import constructorBurgerSlice, { IConstructorBurgerState } from './constructor-burger';
@@ -26,3 +27,7 @@ export const store = configureStore({
 })
 
 export type StoreDispatch = typeof store.dispatch;
+export type StoreRootState = ReturnType<typeof store.getState>;
+
+export const useStoreDispatch = () => useDispatch<StoreDispatch>();
+export const useStoreSelector: TypedUseSelectorHook<StoreRootState> = useSelector;

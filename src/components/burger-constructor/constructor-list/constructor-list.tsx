@@ -1,17 +1,17 @@
 import {FC} from 'react';
 
 import { ConstructorElement } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useSelector } from 'react-redux';
 import { getConstructorBurgerState } from '../../../services/selectors';
 import ConstructorItem from '../constructor-item/constructor-item';
 
 import styles from './constructor-list.module.css'
+import { useStoreSelector } from '../../../services/store';
 
 const ConstructorList: FC = () => {
 
-    //const dispatch:StoreDispatch = useDispatch();
+    //const dispatch = useStoreDispatch();
    
-    const {bun, main} = useSelector(getConstructorBurgerState); 
+    const {bun, main} = useStoreSelector(getConstructorBurgerState); 
         
     return (<div className={styles.container + " ml-4 mt-25"}>
             {bun ? (<div className={"ml-8"} >
@@ -29,7 +29,7 @@ const ConstructorList: FC = () => {
             
             { main && main.length >0 ? ( <div className = {styles.scroll + " mb-3 mt-3" }  >
                 { main.map((item, index) => {
-                    return ( <ConstructorItem key = {item.uid} item = {item} index={index} /> )
+                    return ( <ConstructorItem key = {item.uid} item = {item} index = {index} /> )
                     })
                 }
                 </div>) 

@@ -1,5 +1,5 @@
-import { UnknownAction, createSlice, nanoid } from '@reduxjs/toolkit';
-import { EIngredientType, IIdOrIngredientAction, IIngredient, IIngredientAction } from '../utils/types';
+import { createSlice, nanoid } from '@reduxjs/toolkit';
+import { EIngredientType, IIdOrIngredientAction, IIngredient, IIngredientAction, ISortAction } from '../utils/types';
 
 interface ICounter {
   [idProps: string]: number; // ex: [item.id] = num
@@ -72,14 +72,14 @@ const onAdded = (ingredient:IIngredient):IIngredientAction => {
   return { payload: { ...ingredient, uid: nanoid() }, type:"constructorBurger/addIngredient" };
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const sortReducer = (_state:IConstructorBurgerState, _action:UnknownAction) => {
-    /*const { hoverIndex, dragIndex } = action.payload;
+// {hoverIndex, dragIndex}
+const sortReducer = (state:IConstructorBurgerState, action:ISortAction) => {
+    const { hoverIndex, dragIndex } = action.payload;
     const dragItem = state.main[dragIndex];
     if (dragItem) {
       const prevItem = state.main.splice(hoverIndex, 1, dragItem);
       state.main.splice(dragIndex, 1, prevItem[0]);
-    }*/
+    }
 }
 
 // SLICE:

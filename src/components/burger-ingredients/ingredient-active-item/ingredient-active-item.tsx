@@ -1,9 +1,8 @@
 import { FC, useCallback } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 
 import IngredientItem from '../ingredient-item/ingredient-item';
 
-import { StoreDispatch } from '../../../services/store';
+import { useStoreDispatch, useStoreSelector } from '../../../services/store';
 import { setActiveIngredient } from '../../../services/active';
 import { addIngredient } from '../../../services/constructor-burger';
 import { getConstructorBurgerState } from '../../../services/selectors';
@@ -21,8 +20,8 @@ type IngredientActiveItemProps = {
 
 const IngredientActiveItem: FC<IngredientActiveItemProps> = ({ item }) => {
     
-  const dispatch:StoreDispatch = useDispatch();
-  const {counter} = useSelector(getConstructorBurgerState);
+  const dispatch = useStoreDispatch();
+  const {counter} = useStoreSelector(getConstructorBurgerState);
 
   // берем количество из конструктора
   const count = counter[item._id] || 0 ;

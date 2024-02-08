@@ -1,5 +1,6 @@
 import {FC, useEffect} from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 
 import AppHeader from '../app-header/app-header'
 import BurgerIngrediets from '../burger-ingredients/burger-ingredients'
@@ -7,19 +8,19 @@ import BurgerConstructor from '../burger-constructor/burger-constructor';
 
 import { loadIngredientsThunk } from '../../services/load-ingredients';
 import { getLoadIngredientsState, getPostOrderState } from '../../services/selectors';
-import { StoreDispatch } from '../../services/store';
+import { useStoreDispatch, useStoreSelector } from '../../services/store';
 import { EThunkStatus } from '../../utils/types';
 
 import styles from './app.module.css'
 
 const App:FC = () => {  
   
-  const dispatch:StoreDispatch = useDispatch();
+  const dispatch = useStoreDispatch();
 
-  const ingredientsState = useSelector(getLoadIngredientsState);
-  const orderState = useSelector(getPostOrderState);  
+  const ingredientsState = useStoreSelector(getLoadIngredientsState);
+  const orderState = useStoreSelector(getPostOrderState);  
 
-  // грузим игредиенты
+  // load-ingredients
   useEffect(() => {    
     dispatch(loadIngredientsThunk());
   }, [dispatch]);
@@ -27,17 +28,21 @@ const App:FC = () => {
   // поменять на модальку с загрузкой  
   // загрузка-индикатор
   if(ingredientsState.status === EThunkStatus.UNDEFINED 
-    || ingredientsState.status === EThunkStatus.REQUEST) return <div> Загрузка... </div>  
+    || ingredientsState.status === EThunkStatus.REQUEST) 
+    return <div> Загрузка... </div>  
   
   // ожидание-индикатор
-  if(orderState.status === EThunkStatus.REQUEST) return <div> Отправка... </div>    
+  if(orderState.status === EThunkStatus.REQUEST) 
+    return <div> Отправка... </div>    
 
   return (
     <>
       <AppHeader />  
-      <main className={styles.main}>       
-        <BurgerIngrediets /> 
-        <BurgerConstructor />         
+      <main className={styles.main}>   
+        <DndProvider backend={HTML5Backend}>  
+          <BurgerIngrediets /> 
+          <BurgerConstructor />      
+        </DndProvider>     
       </main>         
     </>); 
 }

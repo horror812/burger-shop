@@ -1,10 +1,9 @@
 .header {
-    background: #1C1C21;
-    
+    background: #1C1C21;    
     display: flex;
     flex-direction: column;
     align-items: center;
-/*min-height: 80px;*/
+    /*min-height: 80px;*/
 }
 
 .center {
