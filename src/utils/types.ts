@@ -8,8 +8,7 @@ export enum EIngredientType {
     SOUCE = 'sauce'
 }
 
-export interface IIngredient {
-    dragId?: string;
+export interface IIngredient {    
     _id: string;
     name: string;
     type: EIngredientType;
@@ -22,7 +21,8 @@ export interface IIngredient {
     image_mobile: string;
     image_large: string;
     __v: number;
-
+    // for active: 
+    dragId?: string; // use for drag ?
     uid?: string; // + unique_id
 }
 
@@ -45,6 +45,8 @@ export interface INullOrNumberAction extends PayloadAction<number|null> {}
 export interface IIngredientAction extends PayloadAction<IIngredient> {}
 export interface IIdOrIngredientAction extends PayloadAction<IIngredient|string|null> {}
 export interface INullOrIngredientAction extends PayloadAction<IIngredient|null> {}
+
+export interface ISortAction extends PayloadAction<{hoverIndex:number, dragIndex:number}> {}
 
 export interface ILoadIngredientsData {success?: boolean, data?:IIngredient[]} 
 export interface ILoadIngredientsAction extends PayloadAction<ILoadIngredientsData> {}

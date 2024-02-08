@@ -1,6 +1,4 @@
 import {FC, useCallback, useMemo, useRef} from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 
 import IngredientsItemList from './ingredients-list/ingredients-list';
@@ -9,7 +7,7 @@ import IngredientDetails from './ingredient-details/ingredient-details';
 
 import { EIngredientType} from '../../utils/types';
 import { getActiveState, getLoadIngredientsState } from '../../services/selectors';
-import { StoreDispatch } from '../../services/store';
+import {  useStoreDispatch, useStoreSelector } from '../../services/store';
 import { freeActiveIngredient, setActiveTabIndex } from '../../services/active';
 
 import { calcScrollIndex, filterIngredientsByType, updateScrollByIndex  } from '../../utils/helpers';
@@ -18,10 +16,10 @@ import styles from './burger-ingredients.module.css'
 
 const BurgerIngredients: FC = () =>{
 
-    const dispatch:StoreDispatch = useDispatch();
+    const dispatch = useStoreDispatch();
 
-    const {ingredients} = useSelector(getLoadIngredientsState); // all
-    const {activeIngredient, activeTabIndex} = useSelector(getActiveState);
+    const {ingredients} = useStoreSelector(getLoadIngredientsState); // all
+    const {activeIngredient, activeTabIndex} = useStoreSelector(getActiveState);
        
     const scrollRef = useRef<HTMLDivElement>(null);    
     const bunsRef = useRef<HTMLDivElement>(null); 

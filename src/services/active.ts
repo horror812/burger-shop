@@ -5,7 +5,7 @@ export interface IActiveState {
     activeTabIndex:number; // current tab-state
     activeIngredient:null|IIngredient; // if exists then modal
     activeOrderNumber:null|number; // if exists then modal
-}
+} 
 
 // INIT-STATE:
 
@@ -22,15 +22,15 @@ const activeSlice = createSlice({
     initialState,
     reducers: {          
         // active-tab(bun|sauce|main)
-        setActiveTabIndex:(state:IActiveState, action:INumberAction)=>{ state.activeTabIndex = action.payload; },
+        setActiveTabIndex:(state, action:INumberAction)=>{ state.activeTabIndex = action.payload; },
 
         // show modal-ingredient-details
-        setActiveIngredient: (state:IActiveState, action:INullOrIngredientAction)=>{ state.activeIngredient = action.payload;},
-        freeActiveIngredient: (state:IActiveState)=>{state.activeIngredient = null; },
+        setActiveIngredient: (state, action:INullOrIngredientAction)=>{ state.activeIngredient = action.payload;},
+        freeActiveIngredient: (state)=>{state.activeIngredient = null; },
         
         // show modal-order-details
-        setActiveOrderNumber: (state:IActiveState, action:INullOrNumberAction)=>{ state.activeOrderNumber = action.payload;},
-        freeActiveOrderNumber: (state:IActiveState)=>{state.activeOrderNumber = null; },
+        setActiveOrderNumber: (state, action:INullOrNumberAction)=>{ state.activeOrderNumber = action.payload;},
+        freeActiveOrderNumber: (state)=>{state.activeOrderNumber = null; },
     }
 });
 
