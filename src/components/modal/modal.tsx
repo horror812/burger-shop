@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useCallback, useEffect } from 'react';
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import ModalOverlay from './modal-overlay/modal-overlay';
 import styles from './modal.module.css';
@@ -10,6 +10,20 @@ type ModalProps = {
 }
 
 const Modal: FC<ModalProps> = ({ header, children, onClick }) => {
+
+  // esc-cb
+  const handleCloseByEsc = useCallback(
+    (e: KeyboardEvent) => { e.key === "Escape" && onClick && onClick()}
+  , [onClick]);      
+
+  // eff
+  useEffect(() => {
+      document.addEventListener('keydown', handleCloseByEsc)
+      return () => {
+          document.removeEventListener('keydown', handleCloseByEsc)
+      }
+  }, [handleCloseByEsc]);
+
   return (
     <ModalOverlay onClick={onClick}>
       <div className={styles.root + " pt-10 pr-10 pb-15 pl-10"} 
