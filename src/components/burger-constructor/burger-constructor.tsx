@@ -1,23 +1,24 @@
 import {FC, useCallback, useEffect, useMemo} from 'react';
+import { useDrop } from 'react-dnd';
 
 import Modal from '../modal/modal';
 import OrderDetails from './order-details/order-details';
 import SubmitButton from './submit-button/submit-button';
 import ConstructorList from './constructor-list/constructor-list';
 
-import { StoreDispatch, useStoreDispatch, useStoreSelector } from '../../services/store';
+import { useStoreDispatch, useStoreSelector } from '../../services/store';
 import { getActiveState, getConstructorBurgerState, getPostOrderState } from '../../services/selectors';
 import { freeActiveOrderNumber, setActiveOrderNumber } from '../../services/active';
 import { clearIngredients } from '../../services/constructor-burger';
 import { postOrderThunk } from '../../services/post-order';
-
-import { EThunkStatus } from '../../utils/types';
+import { addIngredient } from '../../services/constructor-burger';
+import { EThunkStatus, IIngredient } from '../../utils/types';
 
 import styles from './burger-constructor.module.css'
 
 const BurgerConstructor: FC = () => {
 
-    const dispatch:StoreDispatch = useStoreDispatch();
+    const dispatch = useStoreDispatch();
     
     const {bun, main} = useStoreSelector(getConstructorBurgerState);
     const {orderInfo, status} = useStoreSelector(getPostOrderState);      
@@ -39,9 +40,8 @@ const BurgerConstructor: FC = () => {
       const ids = [bun!._id, ...main.map((item) => item._id), bun!._id];
       dispatch(postOrderThunk(ids));           
     },[dispatch, bun, main]);    
-
     
-    // ловим изменния после отправки
+    // catch post-order event
     useEffect(() => {       
       if(status == EThunkStatus.SUCCESS) {
         dispatch(setActiveOrderNumber(orderInfo?.number || null));
@@ -49,15 +49,19 @@ const BurgerConstructor: FC = () => {
       }
     }, [orderInfo, status, dispatch]);
 
+    // drop 
+    const [,dragRef] = useDrop({
+      accept: 'drag-ingredient',
+      drop(dragItem:{item:IIngredient}) {       
+        dispatch(addIngredient(dragItem.item)); // to end, not sorted
+      }
+    });
     
     // component:
-    return (<div className = {styles.main + " ml-5"} > 
-
+    return (<div className = {styles.main + " ml-5"} ref = {dragRef} > 
       <ConstructorList />
-
       {totalPrice > 0 && bun && main.length > 0 && 
-          (<SubmitButton onClick={handleSubmit} totalPrice={totalPrice}/>)}       
-      
+          (<SubmitButton onClick={handleSubmit} totalPrice={totalPrice}/>)}      
       {activeOrderNumber &&
           (<Modal onClick={handleCloseModal}>            
             <OrderDetails number={activeOrderNumber} />

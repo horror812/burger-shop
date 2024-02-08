@@ -7,7 +7,7 @@ import IngredientDetails from './ingredient-details/ingredient-details';
 
 import { EIngredientType} from '../../utils/types';
 import { getActiveState, getLoadIngredientsState } from '../../services/selectors';
-import {  useStoreDispatch, useStoreSelector } from '../../services/store';
+import { useStoreDispatch, useStoreSelector } from '../../services/store';
 import { freeActiveIngredient, setActiveTabIndex } from '../../services/active';
 
 import { calcScrollIndex, filterIngredientsByType, updateScrollByIndex  } from '../../utils/helpers';
@@ -56,8 +56,7 @@ const BurgerIngredients: FC = () =>{
     return (
         <div className={styles.main}>
             <div className={styles.header + " mb+10"}>
-                {/* <p>Соберите бургер</p>*/}
-                <p>drag не работает! add on клик!</p>
+                <p>Соберите бургер</p>              
             </div>   
             <section className={styles.ingrTab + " mb-10"}>
                 <Tab value={'bun'} active = {activeTabIndex == 0} onClick={()=>setTabIndex(0)}>Булки</Tab>
