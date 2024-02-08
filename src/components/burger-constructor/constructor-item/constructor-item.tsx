@@ -25,18 +25,18 @@ const ConstructorItem: FC<ConstructorItemProps> = ({item, index}) => {
  
   // drop 
   const [, drop] = useDrop({
-      accept: 'sort',      
+      accept: 'sort-constructor',      
       hover(dragItem:{index:number}, monitor) {
           if (!ref.current) { return; } 
           const hoverIndex = index;
           const dragIndex = dragItem.index;
           if (dragIndex === hoverIndex) { return; }  
-          const hoverBoundingRect = ref.current!.getBoundingClientRect();
-          const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
           const clientOffset = monitor.getClientOffset()!;
+          const hoverBoundingRect = ref.current!.getBoundingClientRect();          
+          const hoverCenterY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
           const hoverClientY = clientOffset.y - hoverBoundingRect.top;
-          if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {return; }
-          if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {return; }
+          if (dragIndex < hoverIndex && hoverClientY < hoverCenterY) {return; }
+          if (dragIndex > hoverIndex && hoverClientY > hoverCenterY) {return; }
           dispatch(sortIngredients({dragIndex, hoverIndex}));
           dragItem.index = hoverIndex;
       }
@@ -44,7 +44,7 @@ const ConstructorItem: FC<ConstructorItemProps> = ({item, index}) => {
 
   // drag
   const [{ isDragging }, drag] = useDrag({
-    type: 'sort',  
+    type: 'sort-constructor',  
     item: { index },
     collect: monitor => ({isDragging: monitor.isDragging()})   
   });
@@ -52,8 +52,9 @@ const ConstructorItem: FC<ConstructorItemProps> = ({item, index}) => {
   // apply 
   drag(drop(ref));
 
+  // component
   return (<div className={styles.item + " mb-4"} 
-      style = { { opacity:isDragging ? 0.5 : 1 }}
+      style = { { opacity:isDragging ? 0.25 : 1 }}
       ref = {ref}     
       draggable>
       <DragIcon type = "primary" />
