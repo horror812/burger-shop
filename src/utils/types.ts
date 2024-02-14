@@ -1,5 +1,9 @@
 import { PayloadAction } from "@reduxjs/toolkit";
 
+interface IResponse {
+    success?: boolean;
+}
+
 // ingredients \\ 
 
 export enum EIngredientType {
@@ -26,7 +30,35 @@ export interface IIngredient {
     uid?: string; // + unique_id
 }
 
-export type IngredientIds = string[];
+export type TPostIngredientsData = {
+    ingredients: string[];
+};
+
+export type TLoginData = {
+    email: string;
+    password: string;
+};
+
+export type TRegisterData = {
+    name: string;
+    email: string;
+    password: string;
+}; 
+
+export type TUpdateUserData = {
+    name: string;
+    email: string;
+    password?: string;
+};
+
+export type TPostResetCodeData = {
+    email: string;
+};
+
+export type TPostResetPasswordData = {
+    password: string;
+    code: string;
+};
 
 // \\
 
@@ -34,7 +66,7 @@ export enum EThunkStatus {
     REQUEST = 'request', // LOADING
     SUCCESS = 'success', 
     FAILED = 'failed',
-    UNDEFINED = 'undefined'
+    UNDEFINED = 'undefined' // on init
 }
 
 // action-types \\
@@ -48,8 +80,32 @@ export interface INullOrIngredientAction extends PayloadAction<IIngredient|null>
 
 export interface ISortAction extends PayloadAction<{hoverIndex:number, dragIndex:number}> {}
 
-export interface ILoadIngredientsData {success?: boolean, data?:IIngredient[]} 
-export interface ILoadIngredientsAction extends PayloadAction<ILoadIngredientsData> {}
+export interface ILoadIngredientsResponse extends IResponse {
+    data?:IIngredient[]
+} 
+export interface ILoadIngredientsAction extends PayloadAction<ILoadIngredientsResponse> {}
 
-export interface IPostOrderData {success?: boolean, name?:string, order?:{number:number}} 
-export interface IPostOrderAction extends PayloadAction<IPostOrderData>{}
+export interface IPostOrderResponse extends IResponse {
+    name?:string;
+    order?:{number:number};
+} 
+export interface IPostOrderAction extends PayloadAction<IPostOrderResponse>{}
+
+export interface IUserData {
+    email?: string; 
+    name?: string;
+}
+export interface IUserResponse extends IResponse {
+    user?:IUserData
+}
+export interface IUserAction extends PayloadAction<IUserResponse>{}
+
+export interface IUserAuthResponse extends IUserResponse {
+    accessToken?:string;
+    refreshToken?:string;
+}
+export interface IUserAuthAction extends PayloadAction<IUserAuthResponse>{}
+
+
+  
+  

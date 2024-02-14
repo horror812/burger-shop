@@ -5,20 +5,20 @@ import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import loadIngredientsSlice, { ILoadIngredientsState } from './load-ingredients';
 import constructorBurgerSlice, { IConstructorBurgerState } from './constructor-burger';
 import postOrderSlice, { IPostOrderState } from './post-order';
-import activeSlice, { IActiveState } from './active';
+import userSlice, { IUserState } from './user';
 
 export const rootReducer = combineReducers({
     loadIngredients: loadIngredientsSlice.reducer,
     constructorBurger: constructorBurgerSlice.reducer,
     postOrder: postOrderSlice.reducer, 
-    active : activeSlice.reducer
+    user : userSlice.reducer
 });
 
 export interface IStore {
     loadIngredients:ILoadIngredientsState;
     constructorBurger:IConstructorBurgerState;
     postOrder:IPostOrderState;
-    active:IActiveState;
+    user:IUserState;
 }
 
 export const store = configureStore({

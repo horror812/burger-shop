@@ -1,4 +1,4 @@
-import {FC, useCallback, useMemo, useRef} from 'react';
+import {FC, useCallback, useMemo, useRef, useState} from 'react';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 
 import IngredientsItemList from './ingredients-list/ingredients-list';
@@ -6,9 +6,9 @@ import Modal from '../modal/modal';
 import IngredientDetails from './ingredient-details/ingredient-details';
 
 import { EIngredientType} from '../../utils/types';
-import { getActiveState, getLoadIngredientsState } from '../../services/selectors';
+import { getLoadIngredientsState } from '../../services/selectors';
 import { useStoreDispatch, useStoreSelector } from '../../services/store';
-import { freeActiveIngredient, setActiveTabIndex } from '../../services/active';
+import { freeActiveIngredient } from '../../services/load-ingredients';
 
 import { calcScrollIndex, filterIngredientsByType, updateScrollByIndex  } from '../../utils/helpers';
 
@@ -18,9 +18,9 @@ const BurgerIngredients: FC = () =>{
 
     const dispatch = useStoreDispatch();
 
-    const {ingredients} = useStoreSelector(getLoadIngredientsState); // all
-    const {activeIngredient, activeTabIndex} = useStoreSelector(getActiveState);
-       
+    const {ingredients, activeIngredient} = useStoreSelector(getLoadIngredientsState); // all
+    const [activeTabIndex, setActiveTabIndex] = useState(0);  
+
     const scrollRef = useRef<HTMLDivElement>(null);    
     const bunsRef = useRef<HTMLDivElement>(null); 
     const saucesRef = useRef<HTMLDivElement>(null);
@@ -43,14 +43,14 @@ const BurgerIngredients: FC = () =>{
     // set-tab-index:
     const setTabIndex = useCallback((index:number) => {   
         updateScrollByIndex(index, [bunsRef, saucesRef, mainRef]);
-        dispatch(setActiveTabIndex(index));
-    },[dispatch]);
+        setActiveTabIndex(index)
+    },[setActiveTabIndex]);
 
     // handle-of-scroll:
     const calcTabIndex = useCallback(()=>{
         const index = calcScrollIndex(scrollRef, bunsRef, saucesRef, mainRef);           
-        dispatch(setActiveTabIndex(index));  
-    },[dispatch]);  
+        setActiveTabIndex(index)
+    },[setActiveTabIndex]);  
       
     // component
     return (

@@ -1,4 +1,10 @@
-import { EIngredientType, IIngredient } from "./types"
+import { EIngredientType, EThunkStatus, IIngredient } from "./types"
+
+// useful utils 
+
+export function isLoading(status:EThunkStatus, isRequestOnly?:boolean) {
+    return isRequestOnly ? status === EThunkStatus.REQUEST : status === EThunkStatus.REQUEST || status === EThunkStatus.UNDEFINED;
+}
 
 // HELPERS: 
 

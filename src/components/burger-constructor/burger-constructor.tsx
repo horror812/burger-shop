@@ -1,4 +1,4 @@
-import {FC, useCallback, useEffect, useMemo} from 'react';
+import {FC, useCallback, useMemo} from 'react';
 import { useDrop } from 'react-dnd';
 
 import Modal from '../modal/modal';
@@ -7,12 +7,11 @@ import SubmitButton from './submit-button/submit-button';
 import ConstructorList from './constructor-list/constructor-list';
 
 import { useStoreDispatch, useStoreSelector } from '../../services/store';
-import { getActiveState, getConstructorBurgerState, getPostOrderState } from '../../services/selectors';
-import { freeActiveOrderNumber, setActiveOrderNumber } from '../../services/active';
+import { getConstructorBurgerState, getPostOrderState } from '../../services/selectors';
 import { clearIngredients } from '../../services/constructor-burger';
-import { postOrderThunk } from '../../services/post-order';
+import { freeActiveOrderNumber, postOrderThunk } from '../../services/post-order';
 import { addIngredient } from '../../services/constructor-burger';
-import { EThunkStatus, IIngredient } from '../../utils/types';
+import { IIngredient } from '../../utils/types';
 
 import styles from './burger-constructor.module.css'
 
@@ -21,8 +20,7 @@ const BurgerConstructor: FC = () => {
     const dispatch = useStoreDispatch();
     
     const {bun, main} = useStoreSelector(getConstructorBurgerState);
-    const {orderInfo, status} = useStoreSelector(getPostOrderState);      
-    const {activeOrderNumber} = useStoreSelector(getActiveState);
+    const {activeOrderNumber} = useStoreSelector(getPostOrderState);
 
     // canSubmit / calc-total-sum:
     const totalPrice = useMemo(() => {      
@@ -38,17 +36,10 @@ const BurgerConstructor: FC = () => {
     const handleSubmit = useCallback(()=>{  
       if(!bun || main.length === 0) return; // можно не проверять
       const ids = [bun!._id, ...main.map((item) => item._id), bun!._id];
-      dispatch(postOrderThunk(ids));           
-    },[dispatch, bun, main]);    
-    
-    // catch post-order event
-    useEffect(() => {       
-      if(status == EThunkStatus.SUCCESS) {
-        dispatch(setActiveOrderNumber(orderInfo?.number || null));
-        dispatch(clearIngredients()); 
-      }
-    }, [orderInfo, status, dispatch]);
-
+      dispatch(postOrderThunk({ingredients:ids})); 
+      dispatch(clearIngredients());
+    },[dispatch, bun, main]);     
+ 
     // drop 
     const [,dragRef] = useDrop({
       accept: 'drag-ingredient',
@@ -56,7 +47,7 @@ const BurgerConstructor: FC = () => {
         dispatch(addIngredient(dragItem.item)); // to end, not sorted
       }
     });
-    
+
     // component:
     return (<div className = {styles.main + " ml-5"} ref = {dragRef} > 
       <ConstructorList />

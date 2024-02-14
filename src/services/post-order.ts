@@ -1,17 +1,19 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { postOrderIngredients } from '../utils/api';
-import { EThunkStatus, IPostOrderData } from '../utils/types';
+import { EThunkStatus, IPostOrderResponse } from '../utils/types';
 
 export interface IPostOrderState {
-  orderInfo: null|{number?:number, name?:string};
   status:EThunkStatus; 
+  orderInfo: null|{number?:number, name?:string};  
+  activeOrderNumber:null|number; // update on success post
 }
 
 // INIT-STATE:
 
 const initialState:IPostOrderState = {
-  orderInfo:null,
-  status:EThunkStatus.UNDEFINED
+  status:EThunkStatus.UNDEFINED,
+  orderInfo:null,  
+  activeOrderNumber:null
 };
 
 // THUNK:
@@ -26,26 +28,34 @@ export const postOrderThunk = createAsyncThunk(
 const postOrderSlice = createSlice({
   name: 'postOrder',
   initialState,
-  reducers: {},
+  reducers: {           
+    // show modal-order-details
+    // setActiveOrderNumber: (state, action:INullOrNumberAction)=>{ state.activeOrderNumber = action.payload;},
+    freeActiveOrderNumber: (state)=>{state.activeOrderNumber = null;},
+  },
   extraReducers: (builder) => {
     builder
       .addCase(postOrderThunk.pending, (state) => {
-        state.orderInfo = null; 
         state.status = EThunkStatus.REQUEST;
+        state.orderInfo = null;  
+        state.activeOrderNumber = null;       
       })
       .addCase(postOrderThunk.fulfilled, (state, action) => {
-        const res:IPostOrderData = action.payload; 
-        state.orderInfo = (res.success && res.order && res.order.number) ? {number: res.order.number, name: res.name} : null;
         state.status = EThunkStatus.SUCCESS;
+        const res:IPostOrderResponse = action.payload; 
+        state.orderInfo = (res.success && res.order && res.order.number) ? {number: res.order.number, name: res.name} : null;
+        state.activeOrderNumber = state.orderInfo?.number || null;
       })
-      .addCase(postOrderThunk.rejected, (state) => {
-        state.orderInfo = null;
+      .addCase(postOrderThunk.rejected, (state) => {        
         state.status = EThunkStatus.FAILED;
+        state.orderInfo = null;
+        state.activeOrderNumber = null;
       });
     }
 });
 
 // ACTIONS: 
-/* export const actions = {***} = postOrderSlice.actions; */
+
+export const {freeActiveOrderNumber} = postOrderSlice.actions; 
 
 export default postOrderSlice;

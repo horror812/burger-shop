@@ -1,35 +1,50 @@
 import {FC} from 'react';
+import { NavLink } from 'react-router-dom';
 import {BurgerIcon, ListIcon, ProfileIcon, Logo} from '@ya.praktikum/react-developer-burger-ui-components';
-import LinkButton from './link-button/link-button';
-import style from './app-header.module.css'
 
-const getCurrentPage = () => { // util:getCurrentPage
-  return 'constrcutor' // 'constrcutor', 'orders', 'profile'
-}
+import { useStoreSelector } from '../../services/store';
+import { getUserState } from '../../services/selectors';
+
+import styles from './app-header.module.css'
 
 const AppHeader: FC = () => {
-    const page = getCurrentPage()   // 'constrcutor', 'orders' or 'profile'
+
+    const userState = useStoreSelector(getUserState);      
+
     return (
-        <header className={style.header}>
-            <div className={style.center}>
-                <nav className={style.nav + " mt-4"}>
-                    <div className={style.container}>                       
-                        <LinkButton icon={<BurgerIcon type={page === 'constrcutor' ? 'primary' : 'secondary'}/>}
-                                text="Конструктор" type={page === 'constrcutor' ? 'primary' : 'secondary'}/>                                           
-                        <LinkButton icon={<ListIcon
-                                type={page === 'orders' ? 'primary' : 'secondary'}/>}
-                                          text="Лента заказов"
-                                          type={page === 'orders' ? 'primary' : 'secondary'}/>
-                       
-                    </div>
-                    <div className={style.logo}>                 
+        <header className={styles.header}>
+            <div className={styles.center}>
+                <nav className={styles.nav + " mt-4"}>
+                    <div className={styles.container}>  
+                        <NavLink className = {styles.button} to = {"/"}> 
+                            {({ isActive }) => (<>
+                                <BurgerIcon type = {isActive ? 'primary' :'secondary'} />
+                                <span className = {isActive ? styles.fontPrimary : styles.fontSecondary}>
+                                Конструктор
+                                </span>
+                            </>)}         
+                        </NavLink>
+                        <NavLink className = {styles.button} to = {"/orders"}> 
+                            {({ isActive }) => (<>
+                                <ListIcon type = {isActive ? 'primary' :'secondary'} />
+                                <span className = {isActive ? styles.fontPrimary : styles.fontSecondary}>
+                                Лента заказов
+                                </span>
+                            </>)}         
+                        </NavLink>                      
+                    </div>                    
+                    <div className={styles.logo}>                 
                       <Logo/>                                  
                     </div>
-                    <div className={style.profile}>
-                        <LinkButton
-                            icon={<ProfileIcon type={page === 'profile' ? 'primary' : 'secondary'}/>}
-                            text="Личный кабинет"
-                            type={page === 'profile' ? 'primary' : 'secondary'}/>
+                    <div className={styles.profile}>
+                        <NavLink className = {styles.button} to = {"/profile"}> 
+                            {({ isActive }) => (<>
+                                <ProfileIcon type = {isActive ? 'primary' :'secondary'} />
+                                <span className = {isActive ? styles.fontPrimary : styles.fontSecondary}>
+                                {userState.isAuth ? "Я тут," + userState.user.name : "Войти/Регистрация"}
+                                </span>
+                            </>)}         
+                        </NavLink>    
                     </div>
                 </nav>
             </div>

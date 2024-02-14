@@ -3,7 +3,7 @@ import { FC, useCallback } from 'react';
 import IngredientItem from '../ingredient-item/ingredient-item';
 
 import { useStoreDispatch, useStoreSelector } from '../../../services/store';
-import { setActiveIngredient } from '../../../services/active';
+import { setActiveIngredient } from '../../../services/load-ingredients';
 import { getConstructorBurgerState } from '../../../services/selectors';
 
 import { IIngredient} from '../../../utils/types';

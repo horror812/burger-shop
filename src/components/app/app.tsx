@@ -1,49 +1,57 @@
+import { Routes, Route, useLocation } from 'react-router-dom';
 import {FC, useEffect} from 'react';
-import { DndProvider } from 'react-dnd';
-import { HTML5Backend } from 'react-dnd-html5-backend';
 
 import AppHeader from '../app-header/app-header'
-import BurgerIngrediets from '../burger-ingredients/burger-ingredients'
-import BurgerConstructor from '../burger-constructor/burger-constructor';
+import MainPage from '../../pages/main/main';
 
 import { loadIngredientsThunk } from '../../services/load-ingredients';
-import { getLoadIngredientsState, getPostOrderState } from '../../services/selectors';
+import { loadUserThunk } from '../../services/user';
+import { getLoadIngredientsState, getPostOrderState, getUserState } from '../../services/selectors';
 import { useStoreDispatch, useStoreSelector } from '../../services/store';
-import { EThunkStatus } from '../../utils/types';
 
-import styles from './app.module.css'
+import { isLoading } from '../../utils/helpers';
+import IngredientDetailsPage from '../../pages/ingredient-details/ingredient-details';
+
 
 const App:FC = () => {  
   
   const dispatch = useStoreDispatch();
+  const location = useLocation();
+  //const background = location.state && location.state.background ? true : false;
 
+  // states
   const ingredientsState = useStoreSelector(getLoadIngredientsState);
   const orderState = useStoreSelector(getPostOrderState);  
+  //const userState = useStoreSelector(getUserState);  
 
-  // load-ingredients
+  // load-ingredients/user-info
   useEffect(() => {    
     dispatch(loadIngredientsThunk());
+    //if (!userState.isAuth) {dispatch(loadUserThunk())}
   }, [dispatch]);
-  
-  // поменять на модальку с загрузкой  
-  // загрузка-индикатор
-  if(ingredientsState.status === EThunkStatus.UNDEFINED 
-    || ingredientsState.status === EThunkStatus.REQUEST) 
+
+  // waiting requests  isLoading(userState.status)|| 
+  if(isLoading(ingredientsState.status)) 
     return <div> Загрузка... </div>  
   
-  // ожидание-индикатор
-  if(orderState.status === EThunkStatus.REQUEST) 
+  // pending-postion
+  if(isLoading(orderState.status, true)) 
     return <div> Отправка... </div>    
 
   return (
     <>
-      <AppHeader />  
-      <main className={styles.main}>   
-        <DndProvider backend={HTML5Backend}>  
-          <BurgerIngrediets /> 
-          <BurgerConstructor />      
-        </DndProvider>     
-      </main>         
+        <AppHeader />  
+        <Routes location={location}>
+          <Route path='/' element={<MainPage />} />
+          <Route path='/ingredients/:ingredientId' element={<IngredientDetailsPage />}/>
+         {/* 
+          <Route path='/profile' element={<PR element={<Profile />} />} />
+          <Route path='/login' element={<PR anonymous element={<Login />} />} />
+          <Route path='/register' element={<PR anonymous element={<Register />} />} />
+          <Route path='/forgot-password' element={<PR anonymous element={<ForgotPassword />} />} />
+          <Route path='/reset-password' element={<PR anonymous element={<ResetPassword />} />} />
+        */}
+        </Routes>  
     </>); 
 }
 
