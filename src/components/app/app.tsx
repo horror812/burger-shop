@@ -3,6 +3,8 @@ import {FC, useEffect} from 'react';
 
 import AppHeader from '../app-header/app-header'
 import MainPage from '../../pages/main/main';
+import IngredientDetailsPage from '../../pages/ingredient-details/ingredient-details';
+import Loader from '../loader/loader';
 
 import { loadIngredientsThunk } from '../../services/load-ingredients';
 import { loadUserThunk } from '../../services/user';
@@ -10,8 +12,13 @@ import { getLoadIngredientsState, getPostOrderState, getUserState } from '../../
 import { useStoreDispatch, useStoreSelector } from '../../services/store';
 
 import { isLoading } from '../../utils/helpers';
-import IngredientDetailsPage from '../../pages/ingredient-details/ingredient-details';
-
+import ProtectedRoute from '../protected-route/protected-route';
+import NotFoundPage from '../../pages/not-found/not-found';
+import LoginPage from '../../pages/login/login';
+import RegisterPage from '../../pages/register/register';
+import ForgotPasswordPage from '../../pages/forgot-password/forgot-password';
+import ResetPasswordPage from '../../pages/reset-password/reset-password';
+import ProfilePage from '../../pages/profile/profile';
 
 const App:FC = () => {  
   
@@ -22,36 +29,34 @@ const App:FC = () => {
   // states
   const ingredientsState = useStoreSelector(getLoadIngredientsState);
   const orderState = useStoreSelector(getPostOrderState);  
-  //const userState = useStoreSelector(getUserState);  
+  const userState = useStoreSelector(getUserState);  
 
   // load-ingredients/user-info
   useEffect(() => {    
     dispatch(loadIngredientsThunk());
-    //if (!userState.isAuth) {dispatch(loadUserThunk())}
+    dispatch(loadUserThunk())
   }, [dispatch]);
 
-  // waiting requests  isLoading(userState.status)|| 
-  if(isLoading(ingredientsState.status)) 
-    return <div> Загрузка... </div>  
-  
-  // pending-postion
-  if(isLoading(orderState.status, true)) 
-    return <div> Отправка... </div>    
+  // check app busy, statuses for load-ingredients/post-order/user-auth
+  const isLoader = isLoading(ingredientsState.status) 
+    || isLoading(orderState.status, true)
+    || isLoading(userState.status)
 
   return (
     <>
         <AppHeader />  
         <Routes location={location}>
           <Route path='/' element={<MainPage />} />
+          <Route path='/orders' element={<>orders!</>} />           
           <Route path='/ingredients/:ingredientId' element={<IngredientDetailsPage />}/>
-         {/* 
-          <Route path='/profile' element={<PR element={<Profile />} />} />
-          <Route path='/login' element={<PR anonymous element={<Login />} />} />
-          <Route path='/register' element={<PR anonymous element={<Register />} />} />
-          <Route path='/forgot-password' element={<PR anonymous element={<ForgotPassword />} />} />
-          <Route path='/reset-password' element={<PR anonymous element={<ResetPassword />} />} />
-        */}
+          <Route path='/profile' element={<ProtectedRoute authorized><ProfilePage/></ProtectedRoute>} />
+          <Route path='/login' element={<ProtectedRoute><LoginPage /></ProtectedRoute>} />
+          <Route path='/register' element={<ProtectedRoute><RegisterPage /></ProtectedRoute>} />
+          <Route path='/forgot-password' element={<ProtectedRoute><ForgotPasswordPage/></ProtectedRoute>} />
+          <Route path='/reset-password' element={<ProtectedRoute><ResetPasswordPage/></ProtectedRoute>} />
+          <Route path='*' element={<NotFoundPage />} />
         </Routes>  
+        {isLoader && (<Loader />)}
     </>); 
 }
 

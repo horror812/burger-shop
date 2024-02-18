@@ -18,7 +18,7 @@ const SubmitButton: FC<SubmitButtonProps> = ({totalPrice, onClick}) => {
           type="primary" 
           size="large" 
           onClick={() => {onClick();}}>
-        Оформить заказ
+      Оформить заказ
       </Button>
     </div>);
 }

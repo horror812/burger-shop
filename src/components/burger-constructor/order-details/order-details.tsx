@@ -1,5 +1,7 @@
 import { FC } from 'react';
+
 import styles from './order-details.module.css'
+
 import doneIcon from '../../../images/done.svg';
 
 type OrderDetailsProps = {

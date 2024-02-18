@@ -8,16 +8,15 @@ const IngredientDetailsPage = () => {
     const {activeIngredient} = useStoreSelector(getLoadIngredientsState);
     if(!activeIngredient){
         // goto 404
-        return <div>404</div>
+        return <div>goto 404</div>
     }    
-    return activeIngredient && (
-        <div className={styles.background}>
+    return (<div className={styles.background}>
             <div className={styles.content}>
                 <div className={"text text_type_main-large"}>Детали ингредиента</div>
                 <IngredientDetails item={activeIngredient}/>
             </div>
-        </div>
-    );
+        </div>);
+    
 };
 
 export default IngredientDetailsPage;
