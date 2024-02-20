@@ -11,7 +11,7 @@ import { loadUserThunk } from '../../services/user';
 import { getLoadIngredientsState, getPostOrderState, getUserState } from '../../services/selectors';
 import { useStoreDispatch, useStoreSelector } from '../../services/store';
 
-import { isLoading } from '../../utils/helpers';
+import { isThunkLoading } from '../../utils/helpers';
 import ProtectedRoute from '../protected-route/protected-route';
 import NotFoundPage from '../../pages/not-found/not-found';
 import LoginPage from '../../pages/login/login';
@@ -19,6 +19,7 @@ import RegisterPage from '../../pages/register/register';
 import ForgotPasswordPage from '../../pages/forgot-password/forgot-password';
 import ResetPasswordPage from '../../pages/reset-password/reset-password';
 import ProfilePage from '../../pages/profile/profile';
+import OrdersPage from '../../pages/orders/orders';
 
 const App:FC = () => {  
   
@@ -38,23 +39,23 @@ const App:FC = () => {
   }, [dispatch]);
 
   // check app busy, statuses for load-ingredients/post-order/user-auth
-  const isLoader = isLoading(ingredientsState.status) 
-    || isLoading(orderState.status, true)
-    || isLoading(userState.status)
+  const isLoader = isThunkLoading(ingredientsState.status) 
+    || isThunkLoading(orderState.status, true)
+    || isThunkLoading(userState.status)
 
   return (
     <>
         <AppHeader />  
         <Routes location={location}>
+          <Route path='*' element={<NotFoundPage />} />
           <Route path='/' element={<MainPage />} />
-          <Route path='/orders' element={<>orders!</>} />           
+          <Route path='/orders' element={<OrdersPage />} />           
           <Route path='/ingredients/:ingredientId' element={<IngredientDetailsPage />}/>
-          <Route path='/profile' element={<ProtectedRoute authorized><ProfilePage/></ProtectedRoute>} />
           <Route path='/login' element={<ProtectedRoute><LoginPage /></ProtectedRoute>} />
           <Route path='/register' element={<ProtectedRoute><RegisterPage /></ProtectedRoute>} />
           <Route path='/forgot-password' element={<ProtectedRoute><ForgotPasswordPage/></ProtectedRoute>} />
-          <Route path='/reset-password' element={<ProtectedRoute><ResetPasswordPage/></ProtectedRoute>} />
-          <Route path='*' element={<NotFoundPage />} />
+          <Route path='/reset-password' element={<ProtectedRoute><ResetPasswordPage/></ProtectedRoute>} />   
+          <Route path='/profile' element={<ProtectedRoute authorized><ProfilePage/></ProtectedRoute>} />          
         </Routes>  
         {isLoader && (<Loader />)}
     </>); 

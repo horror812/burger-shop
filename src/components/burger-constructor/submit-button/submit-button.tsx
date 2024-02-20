@@ -8,8 +8,8 @@ type SubmitButtonProps = {
 }
 
 const SubmitButton: FC<SubmitButtonProps> = ({totalPrice, onClick}) => {  
-  return (<div className={`${styles.total} mt-10 pr-8`}>
-      <span className={`${styles.totalSum} mr-10 text_type_digits-medium`}>
+  return (<div className={styles.total + ' mt-10 pr-8'}>
+      <span className={styles.totalSum + ' mr-10 text_type_digits-medium'}>
         {totalPrice}
         <CurrencyIcon type="primary" />
       </span>        

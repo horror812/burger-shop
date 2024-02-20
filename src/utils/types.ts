@@ -51,14 +51,15 @@ export type TUpdateUserData = {
     password?: string;
 };
 
-export type TPostResetCodeData = {
+export type TPostForgotData = {
     email: string;
 };
 
 export type TPostResetPasswordData = {
     password: string;
-    code: string;
+    token: string;
 };
+
 
 // \\
 
