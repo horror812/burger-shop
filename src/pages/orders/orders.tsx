@@ -1,6 +1,6 @@
 import { FC } from "react";
 
-import styles from './profile.module.css';
+import styles from './orders.module.css';
 
 const OrdersPage:FC = () => {
   return (<div className={styles.root}>

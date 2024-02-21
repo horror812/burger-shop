@@ -2,23 +2,17 @@ import {FC, useCallback, useMemo, useRef, useState} from 'react';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 
 import IngredientsItemList from './ingredients-list/ingredients-list';
-import Modal from '../modal/modal';
-import IngredientDetails from './ingredient-details/ingredient-details';
 
 import { EIngredientType} from '../../utils/types';
 import { getLoadIngredientsState } from '../../services/selectors';
-import { useStoreDispatch, useStoreSelector } from '../../services/store';
-import { freeActiveIngredient } from '../../services/load-ingredients';
-
+import { useStoreSelector } from '../../services/store';
 import { calcScrollIndex, filterIngredientsByType, updateScrollByIndex  } from '../../utils/helpers';
 
 import styles from './burger-ingredients.module.css'
 
 const BurgerIngredients: FC = () =>{
 
-    const dispatch = useStoreDispatch();
-
-    const {ingredients, activeIngredient} = useStoreSelector(getLoadIngredientsState); // all
+    const {ingredients} = useStoreSelector(getLoadIngredientsState); // all
     const [activeTabIndex, setActiveTabIndex] = useState(0);  
 
     const scrollRef = useRef<HTMLDivElement>(null);    
@@ -33,13 +27,8 @@ const BurgerIngredients: FC = () =>{
              , mains:filterIngredientsByType(ingredients, EIngredientType.MAIN)
              , sauces:filterIngredientsByType(ingredients, EIngredientType.SOUCE)
          }
-     },[ingredients])   
-   
-    // close-active-modal
-    const handleCloseModal = useCallback(()=>{        
-        dispatch(freeActiveIngredient());
-    }, [dispatch]);
-   
+     },[ingredients]);   
+    
     // set-tab-index:
     const setTabIndex = useCallback((index:number) => {   
         updateScrollByIndex(index, [bunsRef, saucesRef, mainRef]);
@@ -67,10 +56,7 @@ const BurgerIngredients: FC = () =>{
                 <IngredientsItemList listRef = {bunsRef} index={0} type='bun' title='Булки' ingredients={buns} />
                 <IngredientsItemList listRef = {saucesRef} index={1} type='sauce' title='Соусы' ingredients={sauces} />
                 <IngredientsItemList listRef = {mainRef} index={2} type='main' title='Начинки' ingredients={mains} />
-            </section>
-            {activeIngredient && (<Modal onClick={handleCloseModal} header = "Детали Ингредиента">            
-                <IngredientDetails item={activeIngredient}  />
-            </Modal>)}
+            </section>            
         </div>)
 
 }

@@ -1,4 +1,4 @@
-import { setLocalStorageItem, getLocalStorageItem } from "./storage";
+import { setLocalStorageItem, getLocalStorageItem, removeLocalStorageItem } from "./storage";
 import { IUserResponse, IUserAuthResponse, TLoginData, TPostIngredientsData, TRegisterData, TUpdateUserData, TPostForgotData,TPostResetPasswordData } from "./types";
 
 const API_URL = 'https://norma.nomoreparties.space/api';
@@ -8,7 +8,7 @@ const API_URL = 'https://norma.nomoreparties.space/api';
 const checkResponse = (res:Response) => {return res.ok ? res.json() : Promise.reject('Connection has failed!');};
 const request = (url:RequestInfo, options?:RequestInit) => { return fetch(url, options).then(checkResponse);};
 
-const BEARER = ''; // 'Bearer ';
+const BEARER = '';//'Bearer ';
 //const formatBearer = (str:string)=>{
 //  return (str && str.indexOf(BEARER) === 0) ? str.split(BEARER)[1] : str
 //}
@@ -81,29 +81,41 @@ export const postOrderIngredients = async (postData:TPostIngredientsData)=> {
 // user reg/log=in/log-out \\
 
 export const registerRequest = async (userData: TRegisterData) => {
-  return await fetchRequest('/auth/register', {
+  const res = await fetchRequest('/auth/register', {
       method: 'POST',
       headers: {'Content-type': 'application/json'},
       body: JSON.stringify(userData)
-  });
+  }).then((data)=>{
+    setLocalStorageItem('accessToken', data.accessToken);
+    setLocalStorageItem('refreshToken', data.refreshToken);
+  });   
+  return res as IUserAuthResponse;
 };
 
 export const loginRequest = async (userData: TLoginData) => {
-  return await fetchRequest('/auth/login', {
+  const res = await fetchRequest('/auth/login', {
       method: 'POST',
       headers: {'Content-type': 'application/json' },
       body: JSON.stringify(userData)
-  });
+  }).then((data)=>{
+    setLocalStorageItem('accessToken', data.accessToken);
+    setLocalStorageItem('refreshToken', data.refreshToken);
+  });    
+  return res as IUserAuthResponse;
 };
 
 export const logoutRequest = async () => {
-  return await fetchRequest('/auth/logout', {
-      method: 'POST',
-      headers: {'Content-type': 'application/json'},
-      body: JSON.stringify({ 
-        token: getLocalStorageItem('refreshToken')      
-      })
-  });
+  const res = await fetchRequest('/auth/logout', {
+    method: 'POST',
+    headers: {'Content-type': 'application/json'},
+    body: JSON.stringify({ 
+      token: getLocalStorageItem('refreshToken')      
+    })
+  }).finally(()=>{
+    removeLocalStorageItem('accessToken');
+    removeLocalStorageItem('refreshToken');
+  })
+  return res;
 };
 
 export const forgotPasswordRequest = async (data:TPostForgotData) => {

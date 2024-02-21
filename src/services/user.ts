@@ -1,6 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { EThunkStatus, IUserAuthResponse, IUserData, IUserResponse } from '../utils/types';
-import { removeLocalStorageItem, setLocalStorageItem } from '../utils/storage';
 import {  getUserRequest, loginRequest, logoutRequest, registerRequest, updateUserRequest } from '../utils/api';
 
 export enum EUserRequest{
@@ -12,11 +11,16 @@ export enum EUserRequest{
      UPDATE = 'update', // update-user
 }
 
-export interface IUserState {
-     request:EUserRequest; // current thunk request
-     user: IUserData;
+export interface IUserState {     
      status: EThunkStatus;
-     isAuth: boolean; // logged      
+     user: IUserData;
+
+     isAuth: boolean; // authorized SUCCESS  
+
+     //isAuthRequest:boolean;
+     isAuthError:boolean;
+
+     request:EUserRequest; // current thunk request   
 } 
 
 // INIT-STATE:
@@ -24,8 +28,11 @@ export interface IUserState {
 const initialState:IUserState = {
     user: {email: '',  name: ''},    
     status: EThunkStatus.UNDEFINED,
-    request: EUserRequest.UNDEFINED,
-    isAuth: false,    
+
+    isAuth: false, // authorized
+    isAuthError:false,
+
+    request: EUserRequest.UNDEFINED,      
 };
 
 // clone of user to new-obj
@@ -46,13 +53,15 @@ export const updateUserThunk = createAsyncThunk('updateUserThunk', updateUserReq
 const userSlice = createSlice({
     name: 'user',
     initialState,
-    reducers: {},
+    reducers: {
+     
+    },
     extraReducers:(builder)=> {     
-        // log-in
+        // log-in \\
         builder.addCase(loginThunk.pending, (state) => {
             state.user = initialState.user;
             state.status = EThunkStatus.REQUEST;
-            state.request = EUserRequest.LOGIN;
+            state.request = EUserRequest.LOGIN;           
         });
        builder.addCase(loginThunk.rejected, (state) => {
             state.user = initialState.user;
@@ -63,10 +72,8 @@ const userSlice = createSlice({
             state.status = EThunkStatus.SUCCESS;          
             state.isAuth = true;
             state.user = objUser(res.user);
-            setLocalStorageItem('accessToken', res.accessToken);
-            setLocalStorageItem('refreshToken', res.refreshToken);
        });
-       // registration
+       // registration \\
        builder.addCase(registerThunk.pending, (state) => {
             state.status = EThunkStatus.REQUEST;
             state.request = EUserRequest.REGISTER;
@@ -79,8 +86,6 @@ const userSlice = createSlice({
             state.status = EThunkStatus.SUCCESS; 
             state.isAuth = true;
             state.user = objUser(res.user);                       
-            setLocalStorageItem('accessToken', res.accessToken);
-            setLocalStorageItem('refreshToken', res.refreshToken);
        });
        // log-out
        builder.addCase(logoutThunk.pending, (state) => {
@@ -94,8 +99,6 @@ const userSlice = createSlice({
             state.status = EThunkStatus.SUCCESS; 
             state.isAuth = false;
             state.user = initialState.user;                      
-            removeLocalStorageItem('accessToken');
-            removeLocalStorageItem('refreshToken');
        });
        // get-profile
        builder.addCase(loadUserThunk.pending, (state) => {
@@ -130,7 +133,7 @@ const userSlice = createSlice({
 
 // ACTIONS:
 
-// export const { } = userSlice.actions;
+// export const {authCheck} = userSlice.actions;
 
 // export const activeReducer = activeSlice.reducer;
 

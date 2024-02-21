@@ -1,13 +1,14 @@
 
 
-import { ChangeEvent, FC,FormEvent, useState, useCallback } from 'react';
+import { ChangeEvent, FC,FormEvent, useState, useCallback, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-components';
 
 import { loginThunk } from '../../services/user';
-import { useStoreDispatch } from '../../services/store';
+import { useStoreDispatch, useStoreSelector } from '../../services/store';
 
 import styles from './login.module.css';
+import { getUserState } from '../../services/selectors';
 
 const LoginPage:FC = () => {
 
@@ -15,6 +16,7 @@ const LoginPage:FC = () => {
 
   const dispatch = useStoreDispatch();
   const [loginData, setLoginData] = useState({email: '', password: ''});
+  const userState = useStoreSelector(getUserState);
 
   // cb's
 
@@ -22,10 +24,16 @@ const LoginPage:FC = () => {
     setLoginData({...loginData,[e.target.name]: e.target.value });
   }, [loginData])
 
-  const handleLogin = useCallback((e:FormEvent<HTMLFormElement>) => {
+  const handleLogin = useCallback((e:FormEvent<HTMLFormElement>) => {    
     e.preventDefault();
     dispatch(loginThunk({email: loginData.email, password: loginData.password})); 
   },[loginData, dispatch])
+
+  // eff
+  useEffect(()=>{
+    // console.log("LOGIN", userState.status, userState.request)
+    // userState.status
+  },[userState]);
 
   // comp
   return (
@@ -56,7 +64,7 @@ const LoginPage:FC = () => {
             errorText={'Ошибка'}
             size={'default'}
           />
-          <Button htmlType="button" type="primary" size="medium">
+          <Button htmlType="submit" type="primary" size="medium">
             Войти
           </Button>
         </form>

@@ -50,7 +50,7 @@ const ForgotPasswordPage:FC = () => {
             errorText={'Ошибка'}
             size={'default'}
           />
-          <Button htmlType ="button" type="primary" size="medium">
+          <Button htmlType ="submit" type="primary" size="medium">
             Восстановить
           </Button>
         </form>

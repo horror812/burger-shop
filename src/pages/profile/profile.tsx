@@ -1,4 +1,4 @@
-import { ChangeEvent, FC, FormEvent, useCallback, useState } from "react";
+import { ChangeEvent, FC, FormEvent, useCallback, useEffect, useState } from "react";
 import { useStoreDispatch, useStoreSelector } from "../../services/store";
 
 import { getUserState } from "../../services/selectors";
@@ -15,13 +15,15 @@ const ProfilePage:FC = () => {
   const dispatch = useStoreDispatch();
   const userState = useStoreSelector(getUserState);
 
-  const [userData, setUserData] = useState( {name: '',email: '', password: '' });
-
+  const [userData, setUserData] = useState({ name:'', email: '', password: '' });
+  const [wasChanged, setChanged] = useState(false)
+  
   // cb's
 
   const handleChangeFormData = useCallback((e:ChangeEvent<HTMLInputElement>) => {
     setUserData({...userData,[e.target.name]: e.target.value });
-  }, [userData])
+    setChanged(true);
+  }, [userData, setChanged])
 
   const handleLogout = useCallback(() => {    
     dispatch(logoutThunk());
@@ -30,7 +32,8 @@ const ProfilePage:FC = () => {
   const handleUpdate = useCallback((e:FormEvent) => {
     e.preventDefault();    
     dispatch(updateUserThunk(userData));
-  }, [dispatch, userData]);
+    setChanged(false);
+  }, [dispatch, userData, setChanged]);
 
   const handleCancelUpdate = useCallback(() => {
     setUserData({
@@ -38,7 +41,21 @@ const ProfilePage:FC = () => {
       name: userState.user.name || '',
       email: userState.user.email || ''
     });  
-  }, [userState, userData, setUserData]);
+    setChanged(false);
+  }, [userState, userData, setUserData, setChanged]);
+
+  // upd state
+  useEffect(() => {
+      if (userState.user) {
+          setUserData({
+              ...userData,
+              name: userState.user.name || '',
+              email: userState.user.email || '',
+              password: ''
+          })
+      }
+  }, [userState, userData])
+
 
   // comp
   return (
@@ -57,14 +74,13 @@ const ProfilePage:FC = () => {
               История заказов
               </span>
           </>)}              
-          </NavLink>
-             
-          <button className={styles.link + 'text_type_main-medium'}             
+          </NavLink>             
+          <section className={styles.link + 'text_type_main-medium'}             
             onClick={handleLogout}>
             <span className = {styles.fontSecondary}>
             Выход
             </span>
-          </button>
+          </section>
           <span className='text text_type_main-default text_color_inactive mt-20'>В этом разделе вы можете изменить свои персональные данные</span>
         </nav>
     <form 
@@ -104,7 +120,7 @@ const ProfilePage:FC = () => {
         errorText={'Ошибка'}
         size={'default'}
       />
-      <div className={styles.container}>
+      {wasChanged && (<div className={styles.container}>
         <Button htmlType="submit" 
           type={"primary"} 
           size={"medium"}
@@ -118,7 +134,7 @@ const ProfilePage:FC = () => {
         >
           Отмена
         </Button>
-      </div>
+      </div>)}
     </form>
     </section>
   );

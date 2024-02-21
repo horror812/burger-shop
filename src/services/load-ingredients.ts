@@ -5,7 +5,7 @@ import { EThunkStatus, IIngredient, ILoadIngredientsResponse, ILoadIngredientsAc
 export interface ILoadIngredientsState {
   ingredients:IIngredient[];
   status: EThunkStatus;
-  activeIngredient:IIngredient|null; // if exists then modal
+  activeIngredient:IIngredient|null;
 }
 
 // INIT-STATE:
@@ -13,7 +13,7 @@ export interface ILoadIngredientsState {
 const initialState:ILoadIngredientsState = {
   ingredients: [],
   status: EThunkStatus.UNDEFINED ,
-  activeIngredient: null,
+  activeIngredient:null
 };
 
 // THUNK:
@@ -60,5 +60,6 @@ export const {
   setActiveIngredient, 
   freeActiveIngredient,
 } = loadIngredientsSlice.actions;
+
 
 export default loadIngredientsSlice;

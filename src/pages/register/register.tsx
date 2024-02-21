@@ -2,9 +2,10 @@ import { ChangeEvent, FC, FormEvent, useCallback, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button, Input} from '@ya.praktikum/react-developer-burger-ui-components';
 
-import styles from './registration.module.css';
 import { registerThunk } from '../../services/user';
 import { useStoreDispatch } from '../../services/store';
+
+import styles from './register.module.css';
 
 const RegisterPage:FC = () => {
 
@@ -66,7 +67,7 @@ const RegisterPage:FC = () => {
             errorText={'Ошибка'}
             size={'default'}
           />
-          <Button htmlType="button" type="primary" size="medium">
+          <Button htmlType="submit" type="primary" size="medium">
             Зарегистироваться
           </Button>
         </form>

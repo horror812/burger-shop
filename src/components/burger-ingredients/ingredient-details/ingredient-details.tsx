@@ -1,12 +1,15 @@
-import { FC } from 'react';
+import { FC, useMemo } from 'react';
 import styles from './ingredient-details.module.css';
 import { IIngredient } from '../../../utils/types';
+import { useStoreSelector } from '../../../services/store';
+import { useParams } from 'react-router-dom';
+import { getLoadIngredientsState } from '../../../services/selectors';
 
 type IngredientDetailsProps = {
     item:IIngredient
 }
 
-const IngredientDetails:FC<IngredientDetailsProps> = ({item}) => {
+export const IngredientDetailsByItem:FC<IngredientDetailsProps> = ({item}) => {
   return (
     <section className={styles.root}>
       <img src={item.image_large} alt={item.name} />
@@ -33,5 +36,26 @@ const IngredientDetails:FC<IngredientDetailsProps> = ({item}) => {
   )
 };
 
+export const IngredientDetailsByPathId:FC = ()=>{
+  const {ingredientId} = useParams();
+  const {ingredients} = useStoreSelector(getLoadIngredientsState);  
+  // find
+  const activeIngredient = useMemo(()=>{
+      return (ingredients && ingredientId) 
+          ? ingredients.find((ingredient) => ingredient._id === ingredientId) 
+          : null;
+  },[ingredientId, ingredients]);  
+  // not found
+  if(!activeIngredient){return <div> Ингредиент не найден!</div> }
+  // comp
+  return <IngredientDetailsByItem item={activeIngredient}/> 
+}
 
-export default IngredientDetails;
+// for modal
+export const IngredientDetailsByActive = ()=>{
+  const {activeIngredient} = useStoreSelector(getLoadIngredientsState);  
+  if(!activeIngredient){return <div> Ингредиент не найден!</div> }
+  return <IngredientDetailsByItem item={activeIngredient}/> 
+}
+
+export default IngredientDetailsByItem;
