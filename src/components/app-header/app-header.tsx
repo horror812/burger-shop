@@ -1,5 +1,5 @@
 import {FC} from 'react';
-import { NavLink } from 'react-router-dom';
+import {NavLink} from 'react-router-dom';
 import {BurgerIcon, ListIcon, ProfileIcon, Logo} from '@ya.praktikum/react-developer-burger-ui-components';
 
 import { useStoreSelector } from '../../services/store';
