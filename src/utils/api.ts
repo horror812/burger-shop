@@ -138,11 +138,13 @@ export const resetPasswordRequest = async (data:TPostResetPasswordData) => {
 // user-profile get/update \\
 
 export const getUserRequest = async () => {
+  const token = getLocalStorageItem('accessToken') || ''
+  if(token === ''){return Promise.reject('token not found!'); } // нету токена
   return fetchRequestWithRefresh('/auth/user', {
       method: 'GET',
       headers: {
           'Content-type': 'application/json',
-          'Authorization': BEARER + getLocalStorageItem('accessToken') || ''
+          'Authorization': BEARER + token
       }
   }).then((res) => {    
     if (res.success) {return res as IUserResponse;}

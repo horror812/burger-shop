@@ -41,9 +41,9 @@ const App:FC = () => {
 
   // load-auth-user-info
   useEffect(() => {     
-    if(!isAuth){
+    //if(!isAuth){
       dispatch(loadUserThunk()); 
-    }
+    //}
   }, [dispatch, isAuth]);
 
   // comp
