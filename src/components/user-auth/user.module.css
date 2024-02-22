@@ -1,0 +1,60 @@
+
+.root {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  height: calc(100vh - 88px);
+  padding-top: 180px;
+  margin-top: 88px;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  max-width: 480px;
+  width: 100%;
+}
+
+
+.title {
+  margin-top: 0;
+  text-align: center;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.form > div {
+  width: 100%;
+  margin-bottom: 24px;
+}
+
+.form > div > div {
+  width: 100%;
+}
+
+.logging {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logging span {
+  color: #8585AD;
+}
+
+
+.link {
+  text-decoration: none;
+  color: #4C4CFF;
+}
+
+.message {
+  margin-top: 0;
+  color: #dd44c9;
+  text-align: center;
+  text-decoration: none;
+}
