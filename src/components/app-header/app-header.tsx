@@ -41,7 +41,7 @@ const AppHeader: FC = () => {
                             {({ isActive }) => (<>
                                 <ProfileIcon type = {isActive ? 'primary' :'secondary'} />
                                 <span className = {isActive ? styles.fontPrimary : styles.fontSecondary}>
-                                {userState.isAuth ? "Я есть," + userState.user.name : "Войти/Регистрация"}
+                                {userState.isAuth ? "Я," + userState.user.name : "Войти/Регистрация"}
                                 </span>
                             </>)}         
                         </NavLink>    
