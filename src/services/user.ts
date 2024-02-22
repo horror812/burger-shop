@@ -1,26 +1,15 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { EThunkStatus, IUserAuthResponse, IUserData, IUserResponse } from '../utils/types';
-import {  getUserRequest, loginRequest, logoutRequest, registerRequest, updateUserRequest } from '../utils/api';
-
-export enum EUserRequest{
-     UNDEFINED = 'undefined',
-     LOGIN = 'login',
-     LOGOUT = 'logout',
-     REGISTER = 'register',
-     LOAD = 'load', // get-user
-     UPDATE = 'update', // update-user
-}
+import { getUserRequest, loginRequest, logoutRequest, registerRequest, updateUserRequest } from '../utils/api';
 
 export interface IUserState {     
-     status: EThunkStatus;
      user: IUserData;
-
      isAuth: boolean; // authorized SUCCESS  
+     status: EThunkStatus;
 
-     //isAuthRequest:boolean;
-     isAuthError:boolean;
-
-     request:EUserRequest; // current thunk request   
+     registerStatus: EThunkStatus; 
+     loginStatus: EThunkStatus;   
+     // logoutStatus: EThunkStatus;          
 } 
 
 // INIT-STATE:
@@ -28,11 +17,9 @@ export interface IUserState {
 const initialState:IUserState = {
     user: {email: '',  name: ''},    
     status: EThunkStatus.UNDEFINED,
-
-    isAuth: false, // authorized
-    isAuthError:false,
-
-    request: EUserRequest.UNDEFINED,      
+    registerStatus: EThunkStatus.UNDEFINED,
+    loginStatus: EThunkStatus.UNDEFINED,    
+    isAuth: false, // authorized  
 };
 
 // clone of user to new-obj
@@ -45,8 +32,8 @@ export const loginThunk = createAsyncThunk('loginThunk', loginRequest);
 export const logoutThunk = createAsyncThunk('logoutThunk', logoutRequest);
 export const loadUserThunk = createAsyncThunk('loadUserThunk', getUserRequest);
 export const updateUserThunk = createAsyncThunk('updateUserThunk', updateUserRequest);
-// export const resetPasswordThunk = createAsyncThunk('resetPasswordThunk', resetPasswordRequest);
-// export const forgotPasswordThunk = createAsyncThunk('forgotPasswordThunk', forgotPasswordRequest);
+//export const resetPasswordThunk = createAsyncThunk('resetPasswordThunk', resetPasswordRequest);
+//export const forgotPasswordThunk = createAsyncThunk('forgotPasswordThunk', forgotPasswordRequest);
 
 // SLICE:
 
@@ -54,43 +41,50 @@ const userSlice = createSlice({
     name: 'user',
     initialState,
     reducers: {
-     
+     loginAccepted:(state)=>{
+          if(state.loginStatus === EThunkStatus.SUCCESS){
+               state.loginStatus = EThunkStatus.ACCEPTED
+          }
+     },
+     registerAccepted:(state)=>{
+          if(state.registerStatus === EThunkStatus.SUCCESS){
+               state.registerStatus = EThunkStatus.ACCEPTED
+          }
+     }, 
+     // tryAuth:(state)=>{ if(!state.isAuth){}}
     },
-    extraReducers:(builder)=> {     
+    extraReducers:(builder)=> {  
         // log-in \\
         builder.addCase(loginThunk.pending, (state) => {
-            state.user = initialState.user;
-            state.status = EThunkStatus.REQUEST;
-            state.request = EUserRequest.LOGIN;           
-        });
+            state.loginStatus = EThunkStatus.REQUEST; 
+       });
        builder.addCase(loginThunk.rejected, (state) => {
-            state.user = initialState.user;
-            state.status = EThunkStatus.FAILED;
+            state.loginStatus = EThunkStatus.FAILED; 
        });
        builder.addCase(loginThunk.fulfilled, (state, action) => {
-            const res = action.payload as IUserAuthResponse
-            state.status = EThunkStatus.SUCCESS;          
-            state.isAuth = true;
+            state.loginStatus = EThunkStatus.SUCCESS; 
+            const res = action.payload as IUserAuthResponse;
             state.user = objUser(res.user);
+            state.isAuth = true;        
        });
+
        // registration \\
        builder.addCase(registerThunk.pending, (state) => {
-            state.status = EThunkStatus.REQUEST;
-            state.request = EUserRequest.REGISTER;
+            state.registerStatus = EThunkStatus.REQUEST;               
        });
        builder.addCase(registerThunk.rejected, (state) => {
-            state.status = EThunkStatus.FAILED;
+            state.registerStatus = EThunkStatus.FAILED;
        });
        builder.addCase(registerThunk.fulfilled, (state, action) => {
+            state.registerStatus = EThunkStatus.SUCCESS;
             const res = action.payload as IUserAuthResponse;
-            state.status = EThunkStatus.SUCCESS; 
-            state.isAuth = true;
-            state.user = objUser(res.user);                       
+            state.user = objUser(res.user);             
+            state.isAuth = true;                     
        });
-       // log-out
+       
+       // log-out \\
        builder.addCase(logoutThunk.pending, (state) => {
             state.status = EThunkStatus.REQUEST;
-            state.request = EUserRequest.LOGOUT;
        });
        builder.addCase(logoutThunk.rejected, (state) => {
             state.status = EThunkStatus.FAILED;
@@ -100,31 +94,31 @@ const userSlice = createSlice({
             state.isAuth = false;
             state.user = initialState.user;                      
        });
-       // get-profile
+
+       // get-profile-auto-auth \\
        builder.addCase(loadUserThunk.pending, (state) => {
             state.status = EThunkStatus.REQUEST;
-            state.request = EUserRequest.LOAD;
        });
        builder.addCase(loadUserThunk.rejected, (state) => {
             state.status = EThunkStatus.FAILED;
        });
        builder.addCase(loadUserThunk.fulfilled, (state, action) => {
-            const res = action.payload as IUserResponse;
             state.status = EThunkStatus.SUCCESS;
+            const res = action.payload as IUserResponse;            
             state.isAuth = true;
             state.user = objUser(res.user);          
        });
-       // update-profile
+
+       // update-profile \\
        builder.addCase(updateUserThunk.pending, (state) => {
             state.status = EThunkStatus.REQUEST;
-            state.request = EUserRequest.UPDATE;
        });
        builder.addCase(updateUserThunk.rejected, (state) => {
             state.status = EThunkStatus.FAILED;
        });
        builder.addCase(updateUserThunk.fulfilled, (state, action) => {
-            const res = action.payload as IUserResponse;
             state.status = EThunkStatus.SUCCESS;
+            const res = action.payload as IUserResponse;           
             state.user = objUser(res.user);
        });        
     },
@@ -133,7 +127,7 @@ const userSlice = createSlice({
 
 // ACTIONS:
 
-// export const {authCheck} = userSlice.actions;
+export const {loginAccepted, registerAccepted} = userSlice.actions;
 
 // export const activeReducer = activeSlice.reducer;
 

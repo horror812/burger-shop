@@ -66,6 +66,7 @@ export type TPostResetPasswordData = {
 export enum EThunkStatus {
     REQUEST = 'request', // LOADING
     SUCCESS = 'success', 
+    ACCEPTED = 'accepted',  // after success->dispatch(accept)->accepted
     FAILED = 'failed',
     UNDEFINED = 'undefined' // on init
 }

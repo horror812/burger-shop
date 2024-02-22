@@ -59,14 +59,13 @@ const fetchRequestWithRefresh = async(seqUrl:RequestInfo, options:RequestInit) =
 // ingredients \\
 
 export const getIngredients = async () => {
-  const res = await fetchRequest('/ingredients'); 
-  return res;
+  return fetchRequest('/ingredients'); 
 };
 
 // post-order \\
 
 export const postOrderIngredients = async (postData:TPostIngredientsData)=> { 
-  const res = await fetchRequest('/orders',{
+  return fetchRequest('/orders',{
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -74,38 +73,37 @@ export const postOrderIngredients = async (postData:TPostIngredientsData)=> {
     },
     body: JSON.stringify(postData)
   });
-  return res;
 };
 
 
 // user reg/log=in/log-out \\
 
 export const registerRequest = async (userData: TRegisterData) => {
-  const res = await fetchRequest('/auth/register', {
+  return fetchRequest('/auth/register', {
       method: 'POST',
       headers: {'Content-type': 'application/json'},
       body: JSON.stringify(userData)
   }).then((data)=>{
     setLocalStorageItem('accessToken', data.accessToken);
     setLocalStorageItem('refreshToken', data.refreshToken);
+    return data as IUserAuthResponse;
   });   
-  return res as IUserAuthResponse;
 };
 
 export const loginRequest = async (userData: TLoginData) => {
-  const res = await fetchRequest('/auth/login', {
+  return fetchRequest('/auth/login', {
       method: 'POST',
       headers: {'Content-type': 'application/json' },
       body: JSON.stringify(userData)
   }).then((data)=>{
     setLocalStorageItem('accessToken', data.accessToken);
     setLocalStorageItem('refreshToken', data.refreshToken);
-  });    
-  return res as IUserAuthResponse;
+    return data as IUserAuthResponse;
+  }); 
 };
 
 export const logoutRequest = async () => {
-  const res = await fetchRequest('/auth/logout', {
+  return fetchRequest('/auth/logout', {
     method: 'POST',
     headers: {'Content-type': 'application/json'},
     body: JSON.stringify({ 
@@ -115,7 +113,6 @@ export const logoutRequest = async () => {
     removeLocalStorageItem('accessToken');
     removeLocalStorageItem('refreshToken');
   })
-  return res;
 };
 
 export const forgotPasswordRequest = async (data:TPostForgotData) => {
@@ -132,7 +129,7 @@ export const resetPasswordRequest = async (data:TPostResetPasswordData) => {
   return fetchRequest('/password-reset/reset',{
     method: 'POST',
     headers: {
-         'Content-Type': 'application/json',
+      'Content-Type': 'application/json',
     },
     body: JSON.stringify({ password: data.password, token: data.token,}),
   });
@@ -141,7 +138,7 @@ export const resetPasswordRequest = async (data:TPostResetPasswordData) => {
 // user-profile get/update \\
 
 export const getUserRequest = async () => {
-  return await fetchRequestWithRefresh('/auth/user', {
+  return fetchRequestWithRefresh('/auth/user', {
       method: 'GET',
       headers: {
           'Content-type': 'application/json',
@@ -154,7 +151,7 @@ export const getUserRequest = async () => {
 };
 
 export const updateUserRequest = async (userData: TUpdateUserData) => {
-  return await fetchRequestWithRefresh('/auth/user', {
+  return fetchRequestWithRefresh('/auth/user', {
       method: 'PATCH',
       headers: {
           'Content-type': 'application/json',

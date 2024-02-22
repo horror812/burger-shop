@@ -1,7 +1,7 @@
-import { useSelector } from "react-redux";
 import { getUserState } from "../../services/selectors";
 import { FC, ReactNode } from "react";
 import {  Navigate, To} from "react-router-dom";
+import { useStoreSelector } from "../../services/store";
 
 type ProtectedRouteProps = {
     authorized?:boolean;
@@ -10,7 +10,7 @@ type ProtectedRouteProps = {
 }
 
 const ProtectedRoute:FC<ProtectedRouteProps> = ({ children, authorized, redirectTo }) => {
-    const { isAuth } = useSelector(getUserState); 
+    const { isAuth } = useStoreSelector(getUserState); 
     if ((isAuth && authorized) || (!isAuth && !authorized)){
         return children
     }

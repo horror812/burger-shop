@@ -4,57 +4,49 @@ import {FC, useCallback, useEffect} from 'react';
 import AppHeader from '../app-header/app-header'
 import MainPage from '../../pages/main/main';
 import IngredientDetailsPage from '../../pages/ingredient-details/ingredient-details';
-import Loader from '../loader/loader';
 
 import { loadIngredientsThunk } from '../../services/load-ingredients';
 import { loadUserThunk } from '../../services/user';
-import { getLoadIngredientsState, getPostOrderState, getUserState } from '../../services/selectors';
 import { useStoreDispatch, useStoreSelector } from '../../services/store';
 
-import { isThunkLoading } from '../../utils/helpers';
 import ProtectedRoute from '../protected-route/protected-route';
 import NotFoundPage from '../../pages/not-found/not-found';
-import LoginPage from '../../pages/login/login';
-import RegisterPage from '../../pages/register/register';
-import ForgotPasswordPage from '../../pages/forgot-password/forgot-password';
-import ResetPasswordPage from '../../pages/reset-password/reset-password';
-import ProfilePage from '../../pages/profile/profile';
+import LoginPage from '../../pages/user-auth/login';
+import RegisterPage from '../../pages/user-auth/register';
+import ForgotPasswordPage from '../../pages/user-auth/forgot-password';
+import ResetPasswordPage from '../../pages/user-auth/reset-password';
+import ProfilePage from '../../pages/user-profile/profile';
 import OrdersPage from '../../pages/orders/orders';
 import Modal from '../modal/modal';
 import { IngredientDetailsByActive } from '../burger-ingredients/ingredient-details/ingredient-details';
+import { getUserState } from '../../services/selectors';
 
 const App:FC = () => {  
   
   const dispatch = useStoreDispatch();
-  const location = useLocation();
   const navigate = useNavigate();
+  const location = useLocation();
   const isBackground = (location.state && location.state.background) ? true : false;
- 
+  const {isAuth} = useStoreSelector(getUserState);
+
   // close-active-modal
   const handleCloseModal = useCallback(()=>{        
-    navigate(-1)
-  },[navigate]);
-
-  // states
-  const ingredientsState = useStoreSelector(getLoadIngredientsState);
-  const orderState = useStoreSelector(getPostOrderState);  
-  const userState = useStoreSelector(getUserState);  
-  
-  // check app busy, statuses for load-ingredients/post-order/user-auth
-  const isLoader = isThunkLoading(ingredientsState.status) 
-    || isThunkLoading(orderState.status, true)
-    || isThunkLoading(userState.status);    
+    navigate(-1);
+  },[navigate]);    
 
   // load-ingredients/user-info
-  useEffect(() => {    
+  useEffect(() => { 
     dispatch(loadIngredientsThunk());
   }, [dispatch]);
 
   // load-auth-user-info
-  useEffect(() => {        
-    dispatch(loadUserThunk());   
-  }, [dispatch, userState]);
+  useEffect(() => {     
+    if(!isAuth){
+      dispatch(loadUserThunk()); 
+    }
+  }, [dispatch, isAuth]);
 
+  // comp
   return (<>
         <AppHeader />  
         
@@ -82,9 +74,7 @@ const App:FC = () => {
                 <IngredientDetailsByPathId/>*/}                
                 <IngredientDetailsByActive />
               </Modal>)}/>
-          </Routes>)}
-
-        {isLoader && (<Loader />)}        
+          </Routes>)}               
     </>); 
 }
 
