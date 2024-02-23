@@ -33,9 +33,9 @@ const AppHeader: FC = () => {
                             </>)}         
                         </NavLink>                      
                     </div>                    
-                    <div className={styles.logo}>                 
-                      <Logo/>                                  
-                    </div>
+                    <NavLink to = {"/"} className={styles.logo}>                 
+                      <Logo/>                                                       
+                    </NavLink>
                     <div className={styles.profile}>
                         <NavLink className = {styles.button} to = {"/profile"}> 
                             {({ isActive }) => (<>

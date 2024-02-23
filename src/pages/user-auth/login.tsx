@@ -33,6 +33,10 @@ const LoginPage:FC = () => {
   if(userState.loginStatus === EThunkStatus.ACCEPTED) return <Navigate to="/" />  
   if(userState.loginStatus === EThunkStatus.FAILED) message = "Что-то не так!" 
   
+  //if (isAuth) {
+  //  return <Navigate to={location.state?.from || "/"} />;
+  // }
+
   // comp-form
   return <LoginForm onSubmit={handleLogin} message = {message}/>;
 };

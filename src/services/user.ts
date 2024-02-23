@@ -88,6 +88,9 @@ const userSlice = createSlice({
        });
        builder.addCase(logoutThunk.rejected, (state) => {
             state.status = EThunkStatus.FAILED;
+            // при ошибки выхода всеровно сбрасываем! 
+            state.isAuth = false;
+            state.user = initialState.user;  
        });
        builder.addCase(logoutThunk.fulfilled, (state) => {
             state.status = EThunkStatus.SUCCESS; 

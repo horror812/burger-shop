@@ -103,23 +103,25 @@ export const loginRequest = async (userData: TLoginData) => {
 };
 
 export const logoutRequest = async () => {
+  const accessToken = getLocalStorageItem('accessToken') || '';
+  if(accessToken === ''){return Promise.reject('token not found!'); } // нету токена
   return fetchRequest('/auth/logout', {
     method: 'POST',
     headers: {'Content-type': 'application/json'},
     body: JSON.stringify({ 
-      token: getLocalStorageItem('refreshToken')      
+      token: getLocalStorageItem('refreshToken') || ''     
     })
   }).finally(()=>{
     removeLocalStorageItem('accessToken');
     removeLocalStorageItem('refreshToken');
-  })
+  });
 };
 
 export const forgotPasswordRequest = async (data:TPostForgotData) => {
   return fetchRequest('/password-reset',{
     method: 'POST',
     headers: {
-         'Content-Type': 'application/json',
+      'Content-Type': 'application/json',
     },
     body: JSON.stringify({ email: data.email }),
   });

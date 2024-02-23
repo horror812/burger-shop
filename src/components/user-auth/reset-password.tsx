@@ -1,9 +1,10 @@
-import { ChangeEvent, FC, FormEvent, useCallback, useState } from "react";
+import { FC } from "react";
 import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link } from "react-router-dom";
 import { TPostResetPasswordData } from "../../utils/types";
 
 import styles from './user.module.css';
+import { useSubmitForm } from "../../utils/hooks/use-form";
 
 type ResetPasswordFormProps = {
   onSubmit: (userData:TPostResetPasswordData)=>void; // item
@@ -13,19 +14,7 @@ type ResetPasswordFormProps = {
 const ResetPasswordForm:FC<ResetPasswordFormProps> = ({onSubmit, message}) => {
 
   // cnst's
-
-  const [resetData, setResetData] = useState({token: '', password: ''});
-  
-  // cb's
-
-  const handleChangeFormData = useCallback((e:ChangeEvent<HTMLInputElement>) => {
-    setResetData({...resetData,[e.target.name]: e.target.value });
-  }, [resetData])
-
-  const handleReset = useCallback((e:FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    onSubmit(resetData);
-  },[resetData,onSubmit])   
+  const resetData = useSubmitForm({token: '', password: ''},onSubmit);
 
   // comp
   return (
@@ -35,13 +24,13 @@ const ResetPasswordForm:FC<ResetPasswordFormProps> = ({onSubmit, message}) => {
         <form 
           id="forgot-password-form" 
           className={styles.form + ' mb-20'}
-          onSubmit={handleReset}
+          onSubmit={resetData.handleSubmit}
         >
           <Input
             type={'password'}
             placeholder={'Введите новый пароль'}
-            onChange={handleChangeFormData}
-            value={resetData.password}
+            onChange={resetData.handleChange}
+            value={resetData.values.password}
             name={'password'}
             error={false}
             errorText={'Ошибка'}
@@ -50,8 +39,8 @@ const ResetPasswordForm:FC<ResetPasswordFormProps> = ({onSubmit, message}) => {
           <Input
             type={'text'}
             placeholder={'Введите код из письма'}
-            onChange={handleChangeFormData}
-            value={resetData.token}
+            onChange={resetData.handleChange}
+            value={resetData.values.token}
             name={'token'}
             error={false}
             errorText={'Ошибка'}

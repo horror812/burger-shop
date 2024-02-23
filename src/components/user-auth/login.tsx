@@ -1,9 +1,10 @@
-import { ChangeEvent, FC,FormEvent, useState, useCallback } from 'react';
+import { FC } from 'react';
 import { Link } from 'react-router-dom';
 import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-components';
 import { TLoginData } from '../../utils/types';
 
 import styles from './user.module.css';
+import { useSubmitForm } from '../../utils/hooks/use-form';
 
 type LoginFormProps = {
   onSubmit: (userData:TLoginData)=>void; // item
@@ -14,20 +15,8 @@ const LoginForm:FC<LoginFormProps> = ({onSubmit, message}) => {
 
   // cnst's
 
-  const [loginData, setLoginData] = useState({email: '', password: ''});
+  const loginData = useSubmitForm({email: '', password: ''}, onSubmit);
 
-  // cb's
-
-  const handleChangeFormData = useCallback((e:ChangeEvent<HTMLInputElement>) => {
-    setLoginData({...loginData,[e.target.name]: e.target.value });
-  }, [loginData])
-
-  const handleLogin = useCallback((e:FormEvent<HTMLFormElement>) => {    
-    e.preventDefault();
-    onSubmit(loginData);
-    // dispatch(loginThunk({email: loginData.email, password: loginData.password})); 
-  },[onSubmit, loginData])
-  
   // comp-form
   return (
     <div className={styles.root}>
@@ -38,12 +27,12 @@ const LoginForm:FC<LoginFormProps> = ({onSubmit, message}) => {
         <form 
           id="login-form" 
           className={styles.form + ' mb-20'}
-          onSubmit={handleLogin}>
+          onSubmit={loginData.handleSubmit}>
           <Input
             type={'email'}
             placeholder={'E-mail'}
-            onChange={handleChangeFormData}
-            value={loginData.email}
+            onChange={loginData.handleChange}
+            value={loginData.values.email}
             name={'email'}
             error={false}
             errorText={'Ошибка'}
@@ -52,8 +41,8 @@ const LoginForm:FC<LoginFormProps> = ({onSubmit, message}) => {
           <Input
             type={'password'}
             placeholder={'Пароль'}
-            onChange={handleChangeFormData}
-            value={loginData.password}
+            onChange={loginData.handleChange}
+            value={loginData.values.password}
             name={'password'}
             error={false}
             errorText={'Ошибка'}

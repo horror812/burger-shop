@@ -10,14 +10,14 @@ import styles from './profile.module.css';
 
 const ProfilePage:FC = () => {
 
-  // cnst's
+  // не использую useForm потому что тут еще wasChanged
 
   const navigate = useNavigate();
   const dispatch = useStoreDispatch();
   const userState = useStoreSelector(getUserState);
 
   const [userData, setUserData] = useState({ name:userState.user.name || '', email: userState.user.email || '', password: '' });
-  const [wasChanged, setChanged] = useState(false)
+  const [wasChanged, setChanged] = useState(false);
   
   // cb's
 
@@ -48,19 +48,6 @@ const ProfilePage:FC = () => {
       password: ''
     });      
   }, [userState, userData, setUserData, setChanged]);
-
-  // upd state
-  /*useEffect(() => {
-      if (userState.isAuth && userState.user) {
-          setUserData({
-              ...userData,
-              name: userState.user.name || '',
-              email: userState.user.email || '',
-              password: ''
-          })
-      }
-  }, [userState, userData]);*/
-
 
   // comp
   return (

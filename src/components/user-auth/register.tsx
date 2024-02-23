@@ -1,7 +1,8 @@
-import { ChangeEvent, FC, FormEvent, useCallback, useState } from 'react';
+import { FC } from 'react';
 import { Link } from 'react-router-dom';
 import { Button, Input} from '@ya.praktikum/react-developer-burger-ui-components';
 import { TRegisterData } from '../../utils/types';
+import { useSubmitForm } from '../../utils/hooks/use-form';
 
 import styles from './user.module.css';
 
@@ -14,19 +15,8 @@ const RegisterForm:FC<RegisterFormProps> = ({onSubmit, message}) => {
 
   // const's
 
-  const [registerData, setRegisterData] = useState({ name: '', email: '', password: ''});
-  
-  // cb's
-
-  const handleChangeFormData = useCallback((e:ChangeEvent<HTMLInputElement>) => {
-    setRegisterData({...registerData,[e.target.name]: e.target.value });
-  }, [registerData])
-
-  const handleRegister = useCallback((e:FormEvent<HTMLFormElement>) => {
-    e.preventDefault();  
-    onSubmit(registerData); 
-  },[registerData, onSubmit])
-
+  const registerData = useSubmitForm({ name: '', email: '', password: ''}, onSubmit);
+   
   // comp
   return (
     <div className={styles.root}>
@@ -35,13 +25,13 @@ const RegisterForm:FC<RegisterFormProps> = ({onSubmit, message}) => {
         <form 
           id="registration-form" 
           className={`${styles.form} mb-20`}
-          onSubmit={handleRegister}
+          onSubmit={registerData.handleSubmit}
         >
           <Input
             type={'text'}
             placeholder={'Имя'}
-            onChange={handleChangeFormData}
-            value={registerData.name}
+            onChange={registerData.handleChange}
+            value={registerData.values.name}
             name={'name'}
             error={false}
             errorText={'Ошибка'}
@@ -50,8 +40,8 @@ const RegisterForm:FC<RegisterFormProps> = ({onSubmit, message}) => {
           <Input
             type={'email'}
             placeholder={'E-mail'}
-            onChange={handleChangeFormData}
-            value={registerData.email}
+            onChange={registerData.handleChange}
+            value={registerData.values.email}
             name={'email'}
             error={false}
             errorText={'Ошибка'}
@@ -60,8 +50,8 @@ const RegisterForm:FC<RegisterFormProps> = ({onSubmit, message}) => {
           <Input
             type={'password'}
             placeholder={'Пароль'}
-            onChange={handleChangeFormData}
-            value={registerData.password}
+            onChange={registerData.handleChange}
+            value={registerData.values.password}
             name={'password'}
             error={false}
             errorText={'Ошибка'}

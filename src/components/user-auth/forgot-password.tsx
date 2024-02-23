@@ -1,9 +1,10 @@
-import { ChangeEvent, FC, FormEvent, useCallback, useState } from "react";
+import { FC } from "react";
 import { Link } from "react-router-dom";
 import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-components';
 import { TPostForgotData } from "../../utils/types";
 
 import styles from './user.module.css';
+import { useSubmitForm } from "../../utils/hooks/use-form";
 
 type ForgotPasswordFormProps = {
   onSubmit: (userData:TPostForgotData)=>void; // item
@@ -14,18 +15,7 @@ const ForgotPasswordForm:FC<ForgotPasswordFormProps> = ({onSubmit, message}) => 
 
   // cnst's
 
-  const [email, setEmail] = useState('');
-
-  // cb's 
- 
-  const handleChangeFormData = useCallback((e:ChangeEvent<HTMLInputElement>) => {
-    setEmail(e.target.value)
-  }, [setEmail])
-
-  const handleEmailConfirm = useCallback(async (e:FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    onSubmit({email:email})
-  },[email, onSubmit])
+  const forgotData = useSubmitForm({email:''}, onSubmit);
 
   // comp
   return (
@@ -35,13 +25,13 @@ const ForgotPasswordForm:FC<ForgotPasswordFormProps> = ({onSubmit, message}) => 
         <form 
           id="forgot-password-form" 
           className={styles.form + ' mb-20'}
-          onSubmit={handleEmailConfirm}
+          onSubmit={forgotData.handleSubmit}
         >
           <Input
             type={'email'}
             placeholder={'E-mail'}
-            onChange={handleChangeFormData}
-            value={email}
+            onChange={forgotData.handleChange}
+            value={forgotData.values.email}
             name={'email'}
             error={false}
             errorText={'Ошибка'}
