@@ -27,9 +27,7 @@ const ProfilePage:FC = () => {
   }, [userData, setChanged])
 
   const handleLogout = useCallback(() => {    
-    dispatch(logoutThunk()).finally(()=>{
-      navigate("/");
-    }); 
+    dispatch(logoutThunk()).finally(()=>{navigate("/");}); 
   }, [dispatch, navigate]);
 
   const handleUpdate = useCallback((e:FormEvent) => {

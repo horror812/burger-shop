@@ -55,7 +55,7 @@ const userSlice = createSlice({
     },
     extraReducers:(builder)=> {  
         // log-in \\
-        builder.addCase(loginThunk.pending, (state) => {
+       builder.addCase(loginThunk.pending, (state) => {
             state.loginStatus = EThunkStatus.REQUEST; 
        });
        builder.addCase(loginThunk.rejected, (state) => {
@@ -88,9 +88,9 @@ const userSlice = createSlice({
        });
        builder.addCase(logoutThunk.rejected, (state) => {
             state.status = EThunkStatus.FAILED;
-            // при ошибки выхода всеровно сбрасываем! 
-            state.isAuth = false;
-            state.user = initialState.user;  
+            // при ошибки выхода всеровно сбрасываем ? 
+            // state.isAuth = false;
+            // state.user = initialState.user;  
        });
        builder.addCase(logoutThunk.fulfilled, (state) => {
             state.status = EThunkStatus.SUCCESS; 

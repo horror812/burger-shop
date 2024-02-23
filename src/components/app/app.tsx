@@ -20,7 +20,6 @@ import OrdersPage from '../../pages/orders/orders';
 import Modal from '../modal/modal';
 import {  IngredientDetailsByPathId } from '../burger-ingredients/ingredient-details/ingredient-details';
 import { getUserState } from '../../services/selectors';
-import LogoutPage from '../../pages/user-auth/logout';
 
 const App:FC = () => {  
   
@@ -57,7 +56,6 @@ const App:FC = () => {
           <Route path='/orders' element={<OrdersPage />} />           
           <Route path='/ingredients/:ingredientId' element={<IngredientDetailsPage />}/>
           <Route path='/login' element={<ProtectedRoute><LoginPage /></ProtectedRoute>} />
-          <Route path='/logout' element={<LogoutPage />} />          
           <Route path='/register' element={<ProtectedRoute><RegisterPage /></ProtectedRoute>} />
           <Route path='/forgot-password' element={<ProtectedRoute><ForgotPasswordPage/></ProtectedRoute>} />
           <Route path='/reset-password' element={<ProtectedRoute><ResetPasswordPage/></ProtectedRoute>} />   
