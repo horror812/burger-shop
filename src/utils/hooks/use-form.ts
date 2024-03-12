@@ -36,3 +36,40 @@ export function useSubmitForm<S>(inputValues:S, onSubmit:(values:S)=>void) {
         handleSubmit
     };
 }
+
+/*
+export function useChangedForm<S>(inputValues:S) {
+    const [values, setValues] = useState(inputValues);
+    const [wasChanged, setChanged] = useState(false);
+
+    const handleChange = useCallback((e:ChangeEvent<HTMLInputElement>) => {
+      const {value, name} = e.target;
+      setValues({...values, [name]: value});
+      setChanged(true);
+    },[values, setValues]);    
+    
+    const handleUpdate = useCallback((e:FormEvent) => {
+        e.preventDefault();    
+        // dispatch(updateUserThunk(userData));
+        setChanged(false);
+        setValues({...userData,password: ''});  
+      }, [ values, setValues, setChanged]);
+    
+    const handleCancel = useCallback(() => {
+    setChanged(false);
+    setUserData({
+        ...userData,
+        name: userState.user.name || '',
+        email: userState.user.email || '',
+        password: ''
+    });      
+    }, [userState, userData, setUserData, setChanged]);
+
+    return {
+        wasChanged, 
+        setChanged,
+        values, 
+        setValues,
+        handleChange
+    };
+}*/
