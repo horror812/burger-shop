@@ -1,4 +1,5 @@
 import { PayloadAction } from "@reduxjs/toolkit";
+import { ActionCreatorWithOptionalPayload, ActionCreatorWithPayload } from '@reduxjs/toolkit';
 
 interface IResponse {
     success?: boolean;
@@ -74,40 +75,70 @@ export enum EThunkStatus {
 // action-types \\
 
 export interface INumberAction extends PayloadAction<number> {}
-export interface INullOrNumberAction extends PayloadAction<number|null> {}
+export interface INullOrNumberAction extends PayloadAction<number | null> {}
 
 export interface IIngredientAction extends PayloadAction<IIngredient> {}
-export interface IIdOrIngredientAction extends PayloadAction<IIngredient|string|null> {}
-export interface INullOrIngredientAction extends PayloadAction<IIngredient|null> {}
+export interface IIdOrIngredientAction extends PayloadAction<IIngredient | string | null> {}
+export interface INullOrIngredientAction extends PayloadAction<IIngredient | null> {}
 
-export interface ISortAction extends PayloadAction<{hoverIndex:number, dragIndex:number}> {}
+export interface ISortAction extends PayloadAction<{ hoverIndex: number, dragIndex: number }> {}
 
 export interface ILoadIngredientsResponse extends IResponse {
-    data?:IIngredient[]
+    data?: IIngredient[]
 } 
 export interface ILoadIngredientsAction extends PayloadAction<ILoadIngredientsResponse> {}
 
 export interface IPostOrderResponse extends IResponse {
-    name?:string;
-    order?:{number:number};
+    name?: string;
+    order?: { number: number };
 } 
-export interface IPostOrderAction extends PayloadAction<IPostOrderResponse>{}
+export interface IPostOrderAction extends PayloadAction<IPostOrderResponse> {}
 
 export interface IUserData {
     email?: string; 
     name?: string;
 }
 export interface IUserResponse extends IResponse {
-    user?:IUserData
+    user?: IUserData
 }
-export interface IUserAction extends PayloadAction<IUserResponse>{}
+export interface IUserAction extends PayloadAction<IUserResponse> {}
 
 export interface IUserAuthResponse extends IUserResponse {
-    accessToken?:string;
-    refreshToken?:string;
+    accessToken?: string;
+    refreshToken?: string;
 }
-export interface IUserAuthAction extends PayloadAction<IUserAuthResponse>{}
+export interface IUserAuthAction extends PayloadAction<IUserAuthResponse> {}
 
+export type wsActions = {
+    wsConnect: ActionCreatorWithPayload<wsPayloadConnect>;
+    wsDisconnect: ActionCreatorWithOptionalPayload<string | undefined>;
+    wsConnecting: ActionCreatorWithOptionalPayload<string | undefined>;
+    wsOpen: ActionCreatorWithOptionalPayload<string | undefined>;
+    wsClose: ActionCreatorWithOptionalPayload<string | undefined>;
+    wsError: ActionCreatorWithOptionalPayload<string | undefined>;
+    wsMessage: ActionCreatorWithPayload<IOrderList>;
+};
+
+export type wsPayloadConnect = {
+    wsUrl: string;
+    withTokenRefresh: boolean
+};
+
+export interface IOrder {
+    _id: string;
+    ingredients: string[];
+    status: string;
+    name: string;
+    createdAt: Date;
+    updatedAt: Date;
+    number: number;
+};
+
+export interface IOrderList extends IResponse {
+    orders: IOrder[];
+    total: number;
+    totalToday: number;
+};
 
   
   
