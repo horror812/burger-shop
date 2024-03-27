@@ -29,7 +29,8 @@ const BurgerConstructor: FC = () => {
     // canSubmit / calc-total-sum:
     const totalPrice = useMemo(() => {      
       return main.reduce((acc, curr) => acc + curr.price, 0) + (bun ? bun.price * 2 : 0);      
-    }, [main, bun]);        
+    }, [main, bun]);      
+
 
     // close-modal-order:
     const handleCloseModal = useCallback(()=>{

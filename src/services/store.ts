@@ -6,14 +6,15 @@ import loadIngredientsSlice, { ILoadIngredientsState } from './load-ingredients'
 import constructorBurgerSlice, { IConstructorBurgerState } from './constructor-burger';
 import postOrderSlice, { IPostOrderState } from './post-order';
 import userSlice, { IUserState } from './user';
+import ordersReducer,{ wsOrdersActions, IOrdersState } from './orders';
 import { socketMiddleware } from './socket-middleware';
-import { wsOrderActions } from './orders';
 
 export const rootReducer = combineReducers({
     loadIngredients: loadIngredientsSlice.reducer,
     constructorBurger: constructorBurgerSlice.reducer,
     postOrder: postOrderSlice.reducer, 
-    user: userSlice.reducer
+    user: userSlice.reducer,
+    orders: ordersReducer,
 });
 
 export interface IStore {
@@ -21,13 +22,14 @@ export interface IStore {
     constructorBurger: IConstructorBurgerState;
     postOrder: IPostOrderState;
     user: IUserState;
+    orders:IOrdersState
 }
 
 export const store = configureStore({
     // devTools: true,
     reducer: rootReducer,    
     middleware: (getDefaultMiddleware) =>
-        getDefaultMiddleware().concat(socketMiddleware(wsOrderActions)),
+        getDefaultMiddleware().concat(socketMiddleware(wsOrdersActions)),
 })
 
 export type StoreDispatch = typeof store.dispatch;

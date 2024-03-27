@@ -1,0 +1,40 @@
+.order_detail {
+    width: 640px;
+    margin: 30px auto 0 auto;
+    text-align: left;
+}
+
+.order_number {
+    text-align: center;
+}
+
+.status {
+    color: #00CCCC;
+}
+
+.scroll_ingredients {
+    overflow-y: scroll;
+    height: 336px;
+}
+
+.scroll_ingredients::-webkit-scrollbar {
+    width: 8px;
+}
+
+.scroll_ingredients::-webkit-scrollbar-thumb {
+    background: #8585AD;
+}
+
+.order_info {
+    display: flex;
+    justify-content: space-between;
+}
+
+.price {
+    display: flex;
+    align-items: center;
+}
+
+.number {
+    text-align: center;
+}

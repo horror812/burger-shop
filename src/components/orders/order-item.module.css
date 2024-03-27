@@ -1,0 +1,76 @@
+.root {
+    background: #1C1C21;
+    border: 2px dashed #4C4CFF;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.04), 0px 0px 2px rgba(0, 0, 0, 0.06), 0px 0px 1px rgba(0, 0, 0, 0.04);
+    border-radius: 40px;
+  }
+  
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .number {
+    color: #F2F2F3;
+  }
+  
+  .name {
+    color: #F2F2F3;
+  }
+  
+  .status {
+    color: #F2F2F3;
+  }
+  
+  .container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .icons {
+    position: relative;
+    display: flex;
+  }
+  
+  .icon {
+    height: 64px;
+    width: 64px;
+    margin-left: -10px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: double 2px transparent;
+    background-image: linear-gradient(black, black),
+    linear-gradient(to right, #7723C0, #5644F2);
+    background-origin: border-box;
+    background-clip: content-box, border-box;
+  }
+  
+  .icon:first-child {
+    margin-left: 0;
+  }
+  
+  .iconMore {
+    opacity: 0.6;
+  }
+  
+  .moreItems {
+    position: absolute;
+    height: 64px;
+    width: 64px;
+    right: 0;
+    z-index: 10;
+    text-align: center;
+    line-height: 64px;
+    color: #F2F2F3;
+  }
+  
+  .total {
+    display: flex;
+    align-items: center;
+  }
+  
+  .totalValue {
+    color: #F2F2F3;
+  }

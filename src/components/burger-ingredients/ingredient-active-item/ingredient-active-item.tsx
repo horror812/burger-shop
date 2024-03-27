@@ -1,6 +1,6 @@
 import { FC, useCallback } from 'react';
 import { useDrag } from 'react-dnd';
-import { Link, useLocation } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 
 import IngredientItem from '../ingredient-item/ingredient-item';
 
@@ -41,7 +41,7 @@ const IngredientActiveItem: FC<IngredientActiveItemProps> = ({ item }) => {
 
   // component 
   return ( 
-      <Link 
+      <NavLink 
           to={'/ingredients/' + item._id}
           state={{ background: location }}
           className = {styles.itemContainer}
@@ -51,7 +51,7 @@ const IngredientActiveItem: FC<IngredientActiveItemProps> = ({ item }) => {
           <div onClick = {handleActiveItem}>
             <IngredientItem  item = {item} count = {count} />
           </div>         
-      </Link>       
+      </NavLink>       
   );
 }
 

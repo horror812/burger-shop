@@ -19,8 +19,9 @@ import ProfilePage from '../../pages/user-profile/profile';
 import Modal from '../modal/modal';
 import { IngredientDetailsByPathId } from '../burger-ingredients/ingredient-details/ingredient-details';
 import { getUserState } from '../../services/selectors';
-import FeedDetailsPage from '../../pages/feed/feed-details';
-import FeedPage from '../../pages/feed/feed';
+
+import OrdersPage from '../../pages/orders/orders';
+import OrderDetailsPage from '../../pages/orders/order-details';
 
 const App: FC = () => {  
   
@@ -53,8 +54,8 @@ const App: FC = () => {
     <Routes location={location.state?.background || location}>
       <Route path='*' element={<NotFoundPage />} />
       <Route path='/' element={<MainPage />} />      
-      <Route path='/feed' element={<FeedPage />} /> 
-      <Route path='/feed/:id' element={<FeedDetailsPage />} />      
+      <Route path='/orders' element={<OrdersPage />} /> 
+      <Route path='/orders/:id' element={<OrderDetailsPage />} />      
       <Route path='/ingredients/:id' element={<IngredientDetailsPage />} />
       <Route path='/login' element={<ProtectedRoute><LoginPage /></ProtectedRoute>} />
       <Route path='/register' element={<ProtectedRoute><RegisterPage /></ProtectedRoute>} />

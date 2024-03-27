@@ -1,7 +1,11 @@
 import { setLocalStorageItem, getLocalStorageItem, removeLocalStorageItem } from "./storage";
 import { IUserResponse, IUserAuthResponse, TLoginData, TPostIngredientsData, TRegisterData, TUpdateUserData, TPostForgotData, TPostResetPasswordData } from "./types";
 
-const API_URL = 'https://norma.nomoreparties.space/api';
+const API_BASE_URL = 'https://norma.nomoreparties.space';
+const API_URL = API_BASE_URL + '/api';
+
+export const API_WSS_USER_ORDERS = API_BASE_URL + '/orders';
+export const API_WSS_ALL_ORDERS = API_BASE_URL + '/orders/all';
 
 // helpers \\
 

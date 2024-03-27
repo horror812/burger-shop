@@ -1,0 +1,72 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  max-width: 1200px;
+  width: 100%;
+  height: calc(100vh - 128px);
+  margin: 128px auto 0;
+}
+
+.title {
+  margin-top: 0;
+}
+
+.mainContainer {
+  display: flex;
+  height: calc(100% - 60px);
+  overflow-y: auto;
+}
+
+.status {
+  flex: 1;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow-y: auto;
+}
+
+.statusContainer {
+  display: flex;
+}
+
+.list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  gap: 8px;
+  max-height: 152px;
+  margin: 0;
+  padding: 0;
+  padding-bottom: 12px;
+  overflow-y: auto;
+}
+
+.done {
+  color: #00CCCC;
+}
+
+.textShadow {
+  text-shadow: 0px 0px 16px rgba(51, 51, 255, 0.25), 0px 0px 8px rgba(51, 51, 255, 0.25), 0px 4px 32px rgba(51, 51, 255, 0.5);
+}
+
+.info::-webkit-scrollbar,
+.list::-webkit-scrollbar
+ {
+	width: 12px;
+}
+
+.info::-webkit-scrollbar-track,
+.list::-webkit-scrollbar-track {
+	background: #2F2F37;
+}
+
+.info::-webkit-scrollbar-thumb,
+.list::-webkit-scrollbar-thumb {
+	background: #8585AD;
+	border: 3px solid #2F2F37;
+	border-radius: 6px;
+}

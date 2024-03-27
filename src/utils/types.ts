@@ -110,17 +110,17 @@ export interface IUserAuthResponse extends IUserResponse {
 export interface IUserAuthAction extends PayloadAction<IUserAuthResponse> {}
 
 export type wsActions = {
-    wsConnect: ActionCreatorWithPayload<wsPayloadConnect>;
-    wsDisconnect: ActionCreatorWithOptionalPayload<string | undefined>;
-    wsConnecting: ActionCreatorWithOptionalPayload<string | undefined>;
-    wsOpen: ActionCreatorWithOptionalPayload<string | undefined>;
-    wsClose: ActionCreatorWithOptionalPayload<string | undefined>;
-    wsError: ActionCreatorWithOptionalPayload<string | undefined>;
-    wsMessage: ActionCreatorWithPayload<IOrderList>;
+    connect: ActionCreatorWithPayload<wsPayloadConnect>;
+    disconnect: ActionCreatorWithOptionalPayload<string | undefined>;
+    connecting: ActionCreatorWithOptionalPayload<string | undefined>;
+    open: ActionCreatorWithOptionalPayload<string | undefined>;
+    close: ActionCreatorWithOptionalPayload<string | undefined>;
+    error: ActionCreatorWithOptionalPayload<string | undefined>;
+    message: ActionCreatorWithPayload<IOrderList>;
 };
 
 export type wsPayloadConnect = {
-    wsUrl: string;
+    url: string;
     withTokenRefresh: boolean
 };
 
@@ -129,16 +129,13 @@ export interface IOrder {
     ingredients: string[];
     status: string;
     name: string;
-    createdAt: Date;
-    updatedAt: Date;
+    createdAt: string;
+    updatedAt: string;
     number: number;
-};
+}  
 
 export interface IOrderList extends IResponse {
     orders: IOrder[];
     total: number;
     totalToday: number;
-};
-
-  
-  
+}  

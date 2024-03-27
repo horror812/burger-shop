@@ -1,0 +1,21 @@
+.order_ingredient {
+    display: flex;
+    justify-content: space-between;
+}
+
+.ingredient_details_in_order {
+    display: flex;
+    align-items:center
+}
+
+.order_ingredient_image {
+    position: relative;
+    display: flex;
+    align-items: center;
+    background: #131316;
+    border: 2px solid #4c4cff;
+    object-fit: contain;
+    border-radius: 100%;
+    width: 64px;
+    height: 64px;
+}
